@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 
-const getStatusClasses = (status) => {
+const getStatusBadge = (status) => {
   switch (status) {
     case "Available":
-      return "bg-emerald-100 text-emerald-700";
+      return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
     case "Occupied":
-      return "bg-amber-100 text-amber-700";
+      return "bg-amber-500/20 text-amber-400 border-amber-500/30";
     case "Maintenance":
-      return "bg-rose-100 text-rose-700";
+      return "bg-rose-500/20 text-rose-400 border-rose-500/30";
     default:
-      return "bg-slate-100 text-slate-700";
+      return "bg-slate-500/20 text-slate-400 border-slate-500/30";
   }
 };
 
@@ -56,36 +56,30 @@ function Lockers() {
   }, [load]);
 
   return (
-    <section className="px-4 py-6 sm:px-6 md:px-8 md:py-8">
+    <section className="relative w-full">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">Lockers</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Live availability from the server. Reserve when a unit shows Available.
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Locker Registry</h1>
+        <p className="mt-2 text-sm text-slate-400">
+          Global inventory. Filter and secure your spot instantly.
         </p>
       </div>
 
       {error ? (
-        <div
-          className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
-          role="alert"
-        >
+        <div className="mb-6 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
           {error}
         </div>
       ) : null}
 
-      <div className="mb-6 flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:flex-row md:items-center md:justify-between">
+      <div className="mb-8 flex flex-col gap-4 rounded-3xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-xl shadow-xl md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Locker Stations</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Filter by location and status.
-          </p>
+          <h2 className="text-lg font-bold text-white">Filters</h2>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <select
             value={locationFilter}
             onChange={(e) => setLocationFilter(e.target.value)}
-            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-sky-500"
+            className="rounded-xl border border-white/10 bg-slate-950 px-4 py-2 text-sm text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             aria-label="Filter by location"
           >
             <option value="all">All Locations</option>
@@ -99,7 +93,7 @@ function Lockers() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-sky-500"
+            className="rounded-xl border border-white/10 bg-slate-950 px-4 py-2 text-sm text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -111,60 +105,64 @@ function Lockers() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-slate-500">Loading lockers…</p>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[1,2,3,4,5,6].map(i => <div key={i} className="h-48 rounded-3xl bg-slate-800/50 animate-pulse border border-white/5"></div>)}
+        </div>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {lockers.map((locker) => (
             <div
               key={locker.id}
-              className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 transition hover:shadow-md"
+              className="flex flex-col justify-between rounded-3xl border border-white/5 bg-slate-900/40 p-6 backdrop-blur-md shadow-lg transition-all hover:bg-slate-800/60 hover:-translate-y-1 hover:border-white/10"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="text-sm text-slate-500">Locker ID</p>
-                  <h3 className="mt-1 text-2xl font-bold text-slate-900">
-                    {locker.id}
-                  </h3>
-                </div>
+              <div>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500 uppercase">Unit ID</p>
+                      <h3 className="text-3xl font-black text-white mt-1">
+                        {locker.id}
+                      </h3>
+                    </div>
 
-                <span
-                  className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${getStatusClasses(
-                    locker.status
-                  )}`}
-                >
-                  {locker.status}
-                </span>
+                    <span
+                      className={`inline-flex shrink-0 items-center justify-center rounded-full border px-3 py-1 text-xs font-bold leading-none ${getStatusBadge(
+                        locker.status
+                      )}`}
+                    >
+                      {locker.status}
+                    </span>
+                  </div>
+
+                  <div className="mt-6 mb-8">
+                    <p className="text-xs text-slate-500 uppercase font-semibold">Location</p>
+                    <p className="mt-1 font-medium text-slate-200">{locker.location}</p>
+                  </div>
               </div>
 
-              <div className="mt-5">
-                <p className="text-sm text-slate-500">Location</p>
-                <p className="mt-1 font-medium text-slate-800">{locker.location}</p>
-              </div>
-
-              <div className="mt-6">
-                <button
-                  type="button"
-                  disabled={locker.status !== "Available"}
-                  onClick={() =>
-                    locker.status === "Available" &&
-                    navigate(`/reserve?locker=${encodeURIComponent(locker.id)}`)
-                  }
-                  className={`w-full rounded-xl px-4 py-3 text-sm font-semibold transition ${
-                    locker.status === "Available"
-                      ? "bg-slate-900 text-white hover:bg-slate-800"
-                      : "cursor-not-allowed bg-slate-200 text-slate-500"
-                  }`}
-                >
-                  {locker.status === "Available" ? "Reserve Locker" : "Unavailable"}
-                </button>
-              </div>
+              <button
+                type="button"
+                disabled={locker.status !== "Available"}
+                onClick={() =>
+                  locker.status === "Available" &&
+                  navigate(`/reserve?locker=${encodeURIComponent(locker.id)}`)
+                }
+                className={`w-full rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                  locker.status === "Available"
+                    ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:scale-[1.02] shadow-lg shadow-indigo-500/25"
+                    : "cursor-not-allowed bg-slate-800 text-slate-500"
+                }`}
+              >
+                {locker.status === "Available" ? "Reserve This Locker" : "Unavailable"}
+              </button>
             </div>
           ))}
         </div>
       )}
 
       {!loading && lockers.length === 0 && !error ? (
-        <p className="text-sm text-slate-500">No lockers match these filters.</p>
+        <div className="py-12 text-center text-slate-500">
+          No lockers match these filters.
+        </div>
       ) : null}
     </section>
   );

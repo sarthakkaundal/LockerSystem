@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", "Inter", sans-serif;
+  --color-slate-950: #050505;
+}
+
+@layer base {
+  body {
+    background-image: radial-gradient(circle at top left, theme("colors.indigo.900/20"), transparent 40%),
+                      radial-gradient(circle at bottom right, theme("colors.purple.900/20"), transparent 40%);
+    background-attachment: fixed;
+  }
+}

@@ -16,11 +16,8 @@ function Login() {
   useEffect(() => {
     if (!isAuthenticated || !user) return;
     let target = "/dashboard";
-    if (user.role === "ADMIN") {
-      target = "/admin";
-    } else if (from && from !== "/" && from !== "/admin") {
-      target = from;
-    }
+    if (user.role === "ADMIN") target = "/admin";
+    else if (from && from !== "/" && from !== "/admin") target = from;
     navigate(target, { replace: true });
   }, [isAuthenticated, user, from, navigate]);
 
@@ -43,75 +40,67 @@ function Login() {
   };
 
   return (
-    <section className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 sm:px-6">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg sm:p-8">
-        <h1 className="mb-2 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Smart Campus Locker
-        </h1>
-        <p className="mb-6 text-sm text-slate-500">
-          Sign in with your campus account. Demo:{" "}
-          <span className="font-mono text-slate-700">student@university.edu</span> /{" "}
-          <span className="font-mono text-slate-700">password123</span>
-        </p>
+    <section className="flex min-h-[80vh] items-center justify-center">
+      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl">
+        <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-indigo-500/20 blur-[80px]"></div>
+        <div className="absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-purple-500/20 blur-[80px]"></div>
 
-        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-          {error ? (
-            <div
-              className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800"
-              role="alert"
-            >
-              {error}
+        <div className="relative z-10">
+          <h1 className="mb-2 text-center text-3xl font-extrabold tracking-tight text-white">
+            Smart Campus
+          </h1>
+          <p className="mb-8 text-center text-sm text-slate-400">
+            Sign in below. Demo:{" "}
+            <span className="font-mono text-indigo-300">student@university.edu</span> /{" "}
+            <span className="font-mono text-indigo-300">password123</span>
+          </p>
+
+          <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+            {error ? (
+              <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-300">
+                {error}
+              </div>
+            ) : null}
+
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-300">
+                University Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="student@university.edu"
+                className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                disabled={submitting}
+              />
             </div>
-          ) : null}
 
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-slate-700"
-            >
-              University Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="student@university.edu"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-sky-500"
+            <div>
+              <label htmlFor="password" className="mb-2 block text-sm font-medium text-slate-300">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white placeholder-slate-600 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                disabled={submitting}
+              />
+            </div>
+
+            <button
+              type="submit"
               disabled={submitting}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-slate-700"
+              className="mt-4 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-3font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:shadow-indigo-500/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100 py-3 font-semibold"
             >
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-sky-500"
-              disabled={submitting}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
-          >
-            {submitting ? "Signing in…" : "Access Locker System"}
-          </button>
-        </form>
+              {submitting ? "Signing in…" : "Access System"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
