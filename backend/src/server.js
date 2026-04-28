@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { z } from "zod";
 import express from "express";
 import cors from "cors";
 import { prisma } from "./lib/prisma.js";
@@ -19,23 +20,69 @@ import { BookingStatus, LockerStatus } from "@prisma/client";
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true
+}));
 app.use(express.json());
+
+const validateBody = (schema) => (req, res, next) => {
+  try {
+    req.body = schema.parse(req.body);
+    next();
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      return res.status(400).json({ error: e.errors[0]?.message || "Invalid input." });
+    }
+    return res.status(400).json({ error: "Invalid input." });
+  }
+};
 
 async function refreshStale() {
   await expireStaleBookings();
 }
 
+// Run expiry cleanup in the background every 1 minute
+setInterval(() => {
+  refreshStale().catch(err => console.error("Error in background expiry job:", err));
+}, 60000);
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
 
-app.post("/api/auth/login", async (req, res) => {
-  const email = String(req.body?.email || "").trim().toLowerCase();
-  const password = String(req.body?.password || "");
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required." });
+const loginAttempts = new Map();
+const loginRateLimiter = (req, res, next) => {
+  const ip = req.ip;
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000; // 15 minutes
+  
+  if (!loginAttempts.has(ip)) {
+    loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    return next();
   }
+  
+  const record = loginAttempts.get(ip);
+  if (now - record.firstAttempt > windowMs) {
+    loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    return next();
+  }
+  
+  if (record.count >= 5) {
+    return res.status(429).json({ error: "Too many login attempts. Please try again later." });
+  }
+  
+  record.count++;
+  next();
+};
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address").transform(e => e.trim().toLowerCase()),
+  password: z.string().min(1, "Password is required")
+});
+
+app.post("/api/auth/login", loginRateLimiter, validateBody(loginSchema), async (req, res) => {
+  const { email, password } = req.body;
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await comparePassword(password, user.passwordHash))) {
     return res.status(401).json({ error: "Invalid email or password." });
@@ -152,23 +199,19 @@ app.get("/api/bookings/history", authMiddleware(true), async (req, res) => {
   });
 });
 
-app.post("/api/bookings", authMiddleware(true), async (req, res) => {
+const bookingSchema = z.object({
+  lockerCode: z.string().min(1, "Locker code is required").transform(s => s.trim()),
+  durationHours: z.number().refine(n => [1, 2, 4].includes(n), "Duration must be 1, 2, or 4 hours."),
+  note: z.string().max(500, "Note too long").optional().nullable()
+});
+
+app.post("/api/bookings", authMiddleware(true), validateBody(bookingSchema), async (req, res) => {
   if (req.user.role !== "STUDENT" && req.user.role !== "ADMIN") {
     return res.status(403).json({ error: "Only students can reserve lockers." });
   }
   await refreshStale();
   const userId = req.user.sub;
-  const lockerCode = String(req.body?.lockerCode || "").trim();
-  const durationHours = Number(req.body?.durationHours);
-  const note =
-    req.body?.note != null ? String(req.body.note).slice(0, 500) : null;
-
-  if (!lockerCode) {
-    return res.status(400).json({ error: "Locker code is required." });
-  }
-  if (![1, 2, 4].includes(durationHours)) {
-    return res.status(400).json({ error: "Duration must be 1, 2, or 4 hours." });
-  }
+  const { lockerCode, durationHours, note } = req.body;
 
   const existing = await prisma.booking.findFirst({
     where: { userId, status: BookingStatus.ACTIVE },
@@ -268,14 +311,15 @@ app.post("/api/bookings/:id/release", authMiddleware(true), async (req, res) => 
   res.json({ ok: true });
 });
 
-app.post("/api/bookings/:id/extend", authMiddleware(true), async (req, res) => {
+const extendSchema = z.object({
+  hours: z.number().refine(n => [1, 2].includes(n), "Extension must be 1 or 2 hours.")
+});
+
+app.post("/api/bookings/:id/extend", authMiddleware(true), validateBody(extendSchema), async (req, res) => {
   await refreshStale();
   const userId = req.user.sub;
   const id = req.params.id;
-  const hours = Number(req.body?.hours);
-  if (![1, 2].includes(hours)) {
-    return res.status(400).json({ error: "Extension must be 1 or 2 hours." });
-  }
+  const hours = req.body.hours;
 
   const booking = await prisma.booking.findFirst({
     where: { id, userId, status: BookingStatus.ACTIVE },
@@ -435,17 +479,19 @@ app.get(
   }
 );
 
+const maintenanceSchema = z.object({
+  code: z.string().min(1, "Locker code is required").transform(s => s.trim()),
+  maintenance: z.boolean()
+});
+
 app.post(
   "/api/admin/lockers/maintenance",
   authMiddleware(true),
   requireAdmin,
+  validateBody(maintenanceSchema),
   async (req, res) => {
     await refreshStale();
-    const code = String(req.body?.code || "").trim();
-    const maintenance = Boolean(req.body?.maintenance);
-    if (!code) {
-      return res.status(400).json({ error: "Locker code is required." });
-    }
+    const { code, maintenance } = req.body;
     const locker = await prisma.locker.findUnique({ where: { code } });
     if (!locker) {
       return res.status(404).json({ error: "Locker not found." });
@@ -505,16 +551,18 @@ app.post(
   }
 );
 
+const forceReleaseSchema = z.object({
+  lockerCode: z.string().min(1, "Locker code is required").transform(s => s.trim())
+});
+
 app.post(
   "/api/admin/bookings/force-release",
   authMiddleware(true),
   requireAdmin,
+  validateBody(forceReleaseSchema),
   async (req, res) => {
     await refreshStale();
-    const code = String(req.body?.lockerCode || "").trim();
-    if (!code) {
-      return res.status(400).json({ error: "Locker code is required." });
-    }
+    const code = req.body.lockerCode;
     const locker = await prisma.locker.findUnique({ where: { code } });
     if (!locker) {
       return res.status(404).json({ error: "Locker not found." });

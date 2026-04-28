@@ -95,46 +95,40 @@ function Reserve() {
   };
 
   return (
-    <section className="relative w-full max-w-2xl mx-auto">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
-          Reserve a Locker
-        </h1>
-        <p className="mt-2 text-sm text-slate-400">
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <div className="page-header center">
+        <h1 className="page-title">Reserve a Locker</h1>
+        <p className="page-subtitle">
           Select access rules. Get your OTP payload instantly.
         </p>
       </div>
 
       {error ? (
-        <div className="mb-6 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+        <div className="alert alert-error">
           {error}
         </div>
       ) : null}
 
-      <form
-        onSubmit={handleSubmit}
-        className="rounded-3xl border border-white/10 bg-slate-900/60 p-8 backdrop-blur-xl shadow-2xl space-y-6 relative overflow-hidden"
-      >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px]"></div>
-
+      <form onSubmit={handleSubmit} className="card">
         {submitError ? (
-          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300 relative z-10">
+          <div className="alert alert-error">
             {submitError}
           </div>
         ) : null}
 
-        <div className="relative z-10">
-          <label htmlFor="locker" className="mb-2 block text-sm font-semibold text-slate-300 uppercase tracking-widest">
+        <div className="form-group mb-3">
+          <label htmlFor="locker" className="form-label card-label">
             Select Unit
           </label>
           {loading ? (
-            <div className="h-12 w-full animate-pulse rounded-xl bg-slate-800"></div>
+            <div className="skeleton skeleton-row"></div>
           ) : (
             <select
               id="locker"
               value={selectedId}
               onChange={(e) => setSelectedId(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-semibold"
+              className="form-input"
+              style={{ fontWeight: 600 }}
             >
               {available.length === 0 ? (
                 <option value="">No lockers available</option>
@@ -148,33 +142,34 @@ function Reserve() {
             </select>
           )}
           {paramId && fromParam && fromParam.status !== "Available" ? (
-            <p className="mt-2 text-xs font-medium text-rose-400">
+            <p className="mt-2" style={{ fontSize: '12px', color: 'var(--error-text)', fontWeight: 500 }}>
               Locker {paramId} is not available. Pick another unit below.
             </p>
           ) : null}
         </div>
 
         {selected ? (
-          <div className="relative z-10 rounded-2xl bg-white/5 p-5 border border-white/5">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Summary</p>
+          <div className="card mb-3" style={{ padding: '16px', backgroundColor: 'var(--bg-app)' }}>
+            <p className="card-label">Summary</p>
             <div className="flex justify-between items-center">
-                <p className="text-2xl font-black text-white">{selected.id}</p>
+                <p className="card-value" style={{ fontSize: '20px' }}>{selected.id}</p>
                 <div className="text-right">
-                    <p className="text-sm font-medium text-indigo-300">{selected.location}</p>
+                    <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--primary-text)' }}>{selected.location}</p>
                 </div>
             </div>
           </div>
         ) : null}
 
-        <div className="relative z-10">
-          <label htmlFor="duration" className="mb-2 block text-sm font-semibold text-slate-300 uppercase tracking-widest">
+        <div className="form-group mb-3">
+          <label htmlFor="duration" className="form-label card-label">
             Duration
           </label>
           <select
             id="duration"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-semibold"
+            className="form-input"
+            style={{ fontWeight: 600 }}
           >
             {durations.map((d) => (
               <option key={d.value} value={d.value}>
@@ -184,12 +179,12 @@ function Reserve() {
           </select>
         </div>
 
-        <div className="relative z-10">
-          <div className="flex justify-between items-end mb-2">
-            <label htmlFor="note" className="block text-sm font-semibold text-slate-300 uppercase tracking-widest">
+        <div className="form-group mb-4">
+          <div className="flex justify-between items-end mb-1">
+            <label htmlFor="note" className="form-label card-label" style={{ marginBottom: 0 }}>
                 Context Reference
             </label>
-            <span className="text-xs text-slate-500 font-medium">{note.length}/500</span>
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{note.length}/500</span>
           </div>
           <textarea
             id="note"
@@ -198,32 +193,25 @@ function Reserve() {
             onChange={(e) => setNote(e.target.value)}
             maxLength={500}
             placeholder="e.g. short term gym storage"
-            className="w-full resize-y rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-medium"
+            className="form-input"
+            style={{ resize: 'vertical' }}
           />
         </div>
 
-        <div className="relative z-10 mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
-          <Link
-            to="/lockers"
-            className="inline-flex justify-center rounded-xl border border-white/10 px-6 py-3 text-sm font-bold text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-          >
+        <div className="flex gap-2 justify-between" style={{ justifyContent: 'flex-end', marginTop: '32px' }}>
+          <Link to="/lockers" className="btn btn-secondary">
             Cancel
           </Link>
           <button
             type="submit"
-            disabled={
-              submitting ||
-              loading ||
-              !selected ||
-              selected.status !== "Available"
-            }
-            className="inline-flex justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] hover:shadow-indigo-500/40 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+            disabled={submitting || loading || !selected || selected.status !== "Available"}
+            className="btn btn-primary"
           >
             {submitting ? "Processing…" : "Confirm Booking"}
           </button>
         </div>
       </form>
-    </section>
+    </div>
   );
 }
 
