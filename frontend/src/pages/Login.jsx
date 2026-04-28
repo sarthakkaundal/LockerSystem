@@ -26,74 +26,73 @@ function Login() {
     setError("");
     const trimmed = email.trim();
     if (!trimmed || !password) {
-      setError("Enter your university email and password.");
+      setError("Enter credentials.");
       return;
     }
     setSubmitting(true);
     try {
       await login(trimmed, password);
     } catch (err) {
-      setError(err.message || "Sign-in failed.");
+      setError(err.message || "Sign-on failed.");
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '80vh', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card" style={{ width: '100%', maxWidth: '400px', padding: '32px' }}>
-        <div className="page-header center">
-          <h1 className="page-title">Smart Campus</h1>
-          <p className="page-subtitle">
-            Demo: student@university.edu / password123
-          </p>
+    <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-app)' }}>
+      <div className="panel" style={{ width: '100%', maxWidth: '360px', border: '1px solid var(--border-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+        <div className="panel-header" style={{ justifyContent: 'center', backgroundColor: 'var(--bg-header)', color: '#fff', borderBottom: 'none' }}>
+          SMART CAMPUS ERP LOGON
         </div>
+        <div className="panel-body" style={{ padding: '24px' }}>
+          <form onSubmit={handleSubmit} noValidate>
+            {error ? (
+              <div className="alert alert-error">
+                {error}
+              </div>
+            ) : null}
 
-        <form onSubmit={handleSubmit} noValidate>
-          {error ? (
-            <div className="alert alert-error">
-              {error}
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                User ID / Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+                disabled={submitting}
+              />
             </div>
-          ) : null}
 
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              University Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="student@university.edu"
-              className="form-input"
+            <div className="form-group" style={{ marginBottom: "24px" }}>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input"
+                disabled={submitting}
+              />
+            </div>
+
+            <button
+              type="submit"
               disabled={submitting}
-            />
-          </div>
-
-          <div className="form-group mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="form-input"
-              disabled={submitting}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="btn btn-primary btn-full"
-          >
-            {submitting ? "Signing in…" : "Access System"}
-          </button>
-        </form>
+              className="btn btn-primary btn-full"
+            >
+              {submitting ? "Authenticating..." : "Logon"}
+            </button>
+            <p style={{ marginTop: '16px', fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center' }}>
+               Demo: student@university.edu / password123
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

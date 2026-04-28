@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Sidebar from "./components/Navbar"; // Renaming Navbar to Sidebar later
+import Sidebar from "./components/Navbar";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
@@ -21,14 +21,14 @@ function AppContent() {
       <div className="main-wrapper">
         {isAuthenticated && (
           <header className="topbar">
-            <div></div>
-            <div className="flex items-center gap-2">
+            <div style={{ fontSize: "14px", fontWeight: "600", letterSpacing: "1px" }}>ENTERPRISE WORKSPACE</div>
+            <div className="flex items-center gap-3">
               <span className="nav-user">{user?.email}</span>
               <button
                 type="button"
                 onClick={logout}
-                className="btn btn-secondary"
-                style={{ padding: "6px 12px", fontSize: "12px" }}
+                className="btn"
+                style={{ backgroundColor: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}
               >
                 Log out
               </button>

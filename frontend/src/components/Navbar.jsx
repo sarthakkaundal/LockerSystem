@@ -8,20 +8,19 @@ export default function Navbar() {
 
   return (
     <aside className="sidebar">
-      <div style={{ padding: "0 8px 32px 8px" }}>
-        <h2 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-main)", letterSpacing: "-0.5px" }}>
-          Locker System
-        </h2>
+      <div className="sidebar-header">
+        LockerSystem ERP
       </div>
-
-      <nav className="flex-col gap-2" style={{ display: "flex", flex: 1 }}>
+      <nav className="flex-col" style={{ display: "flex", flex: 1, paddingTop: "8px" }}>
         <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-        <NavLink to="/lockers" className={linkClass}>Lockers</NavLink>
-        <NavLink to="/my-locker" className={linkClass}>My Locker</NavLink>
-        <NavLink to="/history" className={linkClass}>History</NavLink>
+        <NavLink to="/lockers" className={linkClass}>Locker Allocation</NavLink>
+        <NavLink to="/my-locker" className={linkClass}>My Record</NavLink>
+        <NavLink to="/history" className={linkClass}>Booking History</NavLink>
         
         {user?.role === "ADMIN" ? (
-          <NavLink to="/admin" className={linkClass} style={{ marginTop: "16px" }}>Admin</NavLink>
+          <div style={{ marginTop: "16px", borderTop: "1px solid var(--border-color)", paddingTop: "8px" }}>
+            <NavLink to="/admin" className={linkClass}>System Administration</NavLink>
+          </div>
         ) : null}
       </nav>
     </aside>

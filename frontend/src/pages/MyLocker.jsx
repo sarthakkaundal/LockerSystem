@@ -80,117 +80,65 @@ export default function MyLocker() {
     : { h: 0, m: 0, s: 0, expired: true };
 
   return (
-    <div>
-      {error && <div className="alert alert-error">{error}</div>}
-      {actionError && <div className="alert alert-error">{actionError}</div>}
+    <div className="page-container">
+      <div className="page-header" style={{ justifyContent: "flex-start", gap: "16px" }}>
+         <h1 className="page-title">Active Assignment</h1>
+         {booking && !loading && <span className="status-badge status-available">Active</span>}
+      </div>
 
-      {loading ? (
-        <div className="skeleton skeleton-row" style={{ height: '400px' }}></div>
-      ) : !booking ? (
-        <div className="empty-state">
-          <p className="empty-state-desc">You do not have an active session.</p>
-          <Link to="/reserve" className="btn btn-primary mt-2">
-            Find a Locker
-          </Link>
-        </div>
-      ) : (
-        <div style={{ backgroundColor: "var(--bg-surface)", border: "1px solid var(--border-color)", padding: "32px", position: "relative" }}>
-          
-          <div className="flex justify-between items-start mb-6" style={{ borderBottom: "2px solid var(--border-color)", paddingBottom: "16px" }}>
-            <div>
-              <h1 style={{ fontSize: "32px", fontWeight: "600", marginBottom: "4px" }}>My Locker</h1>
-              <span style={{ fontSize: "14px", fontWeight: "600", letterSpacing: "1px", color: "var(--text-main)" }}>STATUS: <u style={{ color: "var(--success-text)", textDecorationColor: "var(--success-text)" }}>ACTIVE</u></span>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase" }}>Locker ID:</span>
-              <p style={{ fontSize: "24px", fontWeight: "600" }}>{booking.lockerCode}</p>
-            </div>
+      {error && <div className="alert alert-error" style={{ margin: "16px" }}>{error}</div>}
+      {actionError && <div className="alert alert-error" style={{ margin: "16px" }}>{actionError}</div>}
+
+      <div style={{ padding: "16px", display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "flex-start" }}>
+        {loading ? (
+          <div className="skeleton skeleton-row" style={{ flex: 1, minWidth: "300px" }}></div>
+        ) : !booking ? (
+          <div className="empty-state" style={{ flex: 1 }}>
+            <p className="empty-state-desc">No active assignments found.</p>
+            <Link to="/reserve" className="btn btn-primary mt-3">Find Resource</Link>
           </div>
-
-          <div className="flex flex-col md:flex-row gap-6 mb-6">
-            <div style={{ flex: 2 }}>
-              <div style={{ border: "2px solid var(--border-color)", padding: "24px", textAlign: "center", marginBottom: "24px", backgroundColor: "var(--bg-app)", position: "relative" }}>
-                <span className="hidden sm:inline" style={{ position: "absolute", top: "50%", left: "-60px", fontSize: "12px" }}>Focus here →</span>
-                
-                <h2 style={{ fontSize: "clamp(48px, 8vw, 84px)", fontWeight: "600", letterSpacing: "2px", lineHeight: "1", color: rem.expired ? "var(--error-text)" : "var(--text-main)", textShadow: "2px 2px 0 var(--border-color)" }}>
-                   {rem.h.toString().padStart(2, "0")} : {rem.m.toString().padStart(2, "0")} : {rem.s.toString().padStart(2, "0")}
-                </h2>
-                <div className="flex justify-center gap-10 mt-2" style={{ color: "var(--text-muted)", fontSize: "14px", textTransform: "uppercase", letterSpacing: "2px", fontWeight: 600 }}>
-                  <span>Hours</span>
-                  <span>Minutes</span>
-                  <span>Seconds</span>
+        ) : (
+          <>
+            <div className="panel" style={{ flex: 2, minWidth: "300px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
+              <div className="panel-header">Session Details</div>
+              <div className="panel-body">
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-color)", paddingBottom: "16px", marginBottom: "16px" }}>
+                  <div>
+                     <p className="form-label">Resource ID</p>
+                     <h2 style={{ fontSize: "20px", fontWeight: "600" }}>{booking.lockerCode}</h2>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                     <p className="form-label">Time Remaining</p>
+                     <h2 style={{ fontSize: "24px", color: rem.expired ? "var(--error-text)" : "var(--text-main)", fontFamily: "monospace", letterSpacing: "1px" }}>
+                       {rem.h.toString().padStart(2, "0")}:{rem.m.toString().padStart(2, "0")}:{rem.s.toString().padStart(2, "0")}
+                     </h2>
+                  </div>
+                </div>
+                <div style={{ marginBottom: "24px" }}>
+                   <p className="form-label">One-Time Passcode</p>
+                   <div style={{ backgroundColor: "var(--bg-app)", padding: "12px", border: "1px solid var(--border-color)", fontFamily: "monospace", fontSize: "18px", letterSpacing: "4px" }}>
+                      {booking.otpCode}
+                   </div>
+                </div>
+                <div className="flex gap-2 pt-3" style={{ borderTop: "1px solid var(--border-color)" }}>
+                  <button className="btn btn-secondary flex-1" onClick={handleExtend} disabled={busy}>Extend +1hr</button>
+                  <button className="btn btn-primary flex-1" onClick={handleRelease} disabled={busy} style={{ backgroundColor: "var(--error-color)", borderColor: "var(--error-color)" }}>Release</button>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 items-center">
-                 <div style={{ border: "2px solid var(--border-color)", padding: "12px 24px", fontSize: "28px", fontWeight: "600", letterSpacing: "4px", backgroundColor: "var(--bg-app)" }}>
-                    OTP: [ {booking.otpCode?.split('').join(' ')} ]
+            </div>
+            
+            <div className="panel" style={{ flex: 1, minWidth: "250px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
+              <div className="panel-header">Access Token (QR)</div>
+              <div className="panel-body text-center" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                 <div style={{ border: "1px solid var(--border-color)", padding: "8px", backgroundColor: "#fff", display: "inline-block", marginBottom: "16px" }}>
+                    <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={160} level="M" />
                  </div>
-                 <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "150px", lineHeight: "1.2" }}>Your single-use access code.</p>
+                 <p className="form-label">Scan at terminal to unlock</p>
               </div>
             </div>
-
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ border: "2px solid var(--border-color)", padding: "16px", backgroundColor: "#fff", marginBottom: "16px", display: "inline-flex" }}>
-                 <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={180} level="M" />
-              </div>
-              <div style={{ textAlign: "center" }}>
-                 <p style={{ fontWeight: "600", letterSpacing: "1px", marginBottom: "4px" }}>[ QR CODE ]</p>
-                 <p style={{ fontSize: "14px", color: "var(--text-muted)" }}>Scan to open locker.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 mt-8">
-             <div style={{ flex: 1 }}>
-               <button
-                  type="button"
-                  disabled={busy}
-                  onClick={handleExtend}
-                  style={{
-                    width: "100%",
-                    padding: "16px",
-                    border: "2px solid var(--text-main)",
-                    backgroundColor: "transparent",
-                    color: "var(--text-main)",
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    cursor: busy ? "not-allowed" : "pointer"
-                  }}
-               >
-                 [ EXTEND TIME ] ⊕
-               </button>
-               <p style={{ marginTop: "8px", fontSize: "14px", color: "var(--text-muted)", textAlign: "center" }}>Add 1 hour</p>
-             </div>
-
-             <div style={{ flex: 1 }}>
-               <button
-                  type="button"
-                  disabled={busy}
-                  onClick={handleRelease}
-                  style={{
-                    width: "100%",
-                    padding: "16px",
-                    border: "2px solid var(--border-color)",
-                    backgroundColor: "var(--bg-surface-hover)",
-                    color: "var(--text-main)",
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    cursor: busy ? "not-allowed" : "pointer"
-                  }}
-               >
-                 [ RELEASE LOCKER ] ⊗
-               </button>
-               <p style={{ marginTop: "8px", fontSize: "14px", color: "var(--text-muted)", textAlign: "center" }}>End reservation.</p>
-             </div>
-          </div>
-
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

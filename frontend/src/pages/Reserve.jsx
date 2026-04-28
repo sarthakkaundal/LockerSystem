@@ -95,122 +95,115 @@ function Reserve() {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <div className="page-header center">
-        <h1 className="page-title">Reserve a Locker</h1>
-        <p className="page-subtitle">
-          Select access rules. Get your OTP payload instantly.
-        </p>
+    <div className="page-container">
+      <div className="page-header">
+        <h1 className="page-title">Resource Assignment</h1>
       </div>
 
       {error ? (
-        <div className="alert alert-error">
+        <div className="alert alert-error" style={{ margin: "16px" }}>
           {error}
         </div>
       ) : null}
 
-      <form onSubmit={handleSubmit} className="card">
-        {submitError ? (
-          <div className="alert alert-error">
-            {submitError}
-          </div>
-        ) : null}
+      <div style={{ padding: "16px" }}>
+        <form onSubmit={handleSubmit} className="panel" style={{ maxWidth: "600px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
+          <div className="panel-header">Assignment Configuration</div>
+          <div className="panel-body">
+            {submitError ? (
+              <div className="alert alert-error">
+                {submitError}
+              </div>
+            ) : null}
 
-        <div className="form-group mb-3">
-          <label htmlFor="locker" className="form-label card-label">
-            Select Unit
-          </label>
-          {loading ? (
-            <div className="skeleton skeleton-row"></div>
-          ) : (
-            <select
-              id="locker"
-              value={selectedId}
-              onChange={(e) => setSelectedId(e.target.value)}
-              className="form-input"
-              style={{ fontWeight: 600 }}
-            >
-              {available.length === 0 ? (
-                <option value="">No lockers available</option>
+            <div className="form-group">
+              <label htmlFor="locker" className="form-label">
+                Select Resource
+              </label>
+              {loading ? (
+                <div className="skeleton skeleton-row"></div>
               ) : (
-                available.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.id} — {l.location}
-                  </option>
-                ))
+                <select
+                  id="locker"
+                  value={selectedId}
+                  onChange={(e) => setSelectedId(e.target.value)}
+                  className="form-input"
+                >
+                  {available.length === 0 ? (
+                    <option value="">No resources available</option>
+                  ) : (
+                    available.map((l) => (
+                      <option key={l.id} value={l.id}>
+                        {l.id} — {l.location}
+                      </option>
+                    ))
+                  )}
+                </select>
               )}
-            </select>
-          )}
-          {paramId && fromParam && fromParam.status !== "Available" ? (
-            <p className="mt-2" style={{ fontSize: '12px', color: 'var(--error-text)', fontWeight: 500 }}>
-              Locker {paramId} is not available. Pick another unit below.
-            </p>
-          ) : null}
-        </div>
+              {paramId && fromParam && fromParam.status !== "Available" ? (
+                <p className="mt-2" style={{ fontSize: '11px', color: 'var(--error-text)', fontWeight: 500 }}>
+                  Resource {paramId} is unavailable.
+                </p>
+              ) : null}
+            </div>
 
-        {selected ? (
-          <div className="card mb-3" style={{ padding: '16px', backgroundColor: 'var(--bg-app)' }}>
-            <p className="card-label">Summary</p>
-            <div className="flex justify-between items-center">
-                <p className="card-value" style={{ fontSize: '20px' }}>{selected.id}</p>
-                <div className="text-right">
-                    <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--primary-text)' }}>{selected.location}</p>
-                </div>
+            {selected ? (
+              <div style={{ backgroundColor: "var(--bg-app)", border: "1px solid var(--border-color)", padding: "12px", marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontWeight: "600" }}>{selected.id}</span>
+                <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>{selected.location}</span>
+              </div>
+            ) : null}
+
+            <div className="form-group">
+              <label htmlFor="duration" className="form-label">
+                Duration
+              </label>
+              <select
+                id="duration"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                className="form-input"
+              >
+                {durations.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: "24px" }}>
+              <div className="flex justify-between items-end mb-2">
+                <label htmlFor="note" className="form-label" style={{ marginBottom: 0 }}>
+                    Reference Note
+                </label>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{note.length}/500</span>
+              </div>
+              <textarea
+                id="note"
+                rows={3}
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                maxLength={500}
+                className="form-input"
+              />
+            </div>
+
+            <div className="flex gap-2 justify-between" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "16px", marginTop: "16px" }}>
+              <Link to="/lockers" className="btn btn-secondary">
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                disabled={submitting || loading || !selected || selected.status !== "Available"}
+                className="btn btn-primary"
+              >
+                {submitting ? "Processing..." : "Confirm Assignment"}
+              </button>
             </div>
           </div>
-        ) : null}
-
-        <div className="form-group mb-3">
-          <label htmlFor="duration" className="form-label card-label">
-            Duration
-          </label>
-          <select
-            id="duration"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="form-input"
-            style={{ fontWeight: 600 }}
-          >
-            {durations.map((d) => (
-              <option key={d.value} value={d.value}>
-                {d.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group mb-4">
-          <div className="flex justify-between items-end mb-1">
-            <label htmlFor="note" className="form-label card-label" style={{ marginBottom: 0 }}>
-                Context Reference
-            </label>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{note.length}/500</span>
-          </div>
-          <textarea
-            id="note"
-            rows={3}
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            maxLength={500}
-            placeholder="e.g. short term gym storage"
-            className="form-input"
-            style={{ resize: 'vertical' }}
-          />
-        </div>
-
-        <div className="flex gap-2 justify-between" style={{ justifyContent: 'flex-end', marginTop: '32px' }}>
-          <Link to="/lockers" className="btn btn-secondary">
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={submitting || loading || !selected || selected.status !== "Available"}
-            className="btn btn-primary"
-          >
-            {submitting ? "Processing…" : "Confirm Booking"}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
