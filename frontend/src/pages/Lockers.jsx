@@ -50,7 +50,7 @@ function Lockers() {
   );
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-4 sm:space-y-6">
 
 
       {error ? (
@@ -59,13 +59,13 @@ function Lockers() {
         </div>
       ) : null}
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-wrap gap-4 items-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
          <input 
             type="text" 
             placeholder="Search resources..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
+            className="w-full sm:w-64 sm:flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
          />
          <select
             value={locationFilter}
@@ -125,15 +125,15 @@ function Lockers() {
             }}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             {filtered.map((locker) => {
                const isAvail = locker.status === "Available";
                const badgeClass = isAvail 
-                 ? "bg-emerald-100 text-emerald-800" 
+                 ? "bg-green-100 text-green-700" 
                  : locker.status === "Maintenance" 
-                   ? "bg-slate-100 text-slate-600" 
-                   : "bg-red-100 text-red-800";
+                   ? "bg-yellow-100 text-yellow-700" 
+                   : "bg-red-100 text-red-700";
 
                return (
                  <motion.div 
@@ -141,19 +141,19 @@ function Lockers() {
                      hidden: { opacity: 0, y: 20 },
                      show: { opacity: 1, y: 0 }
                    }}
-                   whileHover={{ scale: 1.03, y: -4 }}
+                   whileHover={{ y: -4 }}
                    key={locker.id} 
-                   className="group bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col transition-shadow hover:shadow-lg focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer overflow-hidden relative"
+                   className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 flex flex-col focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer overflow-hidden relative"
                    onClick={() => isAvail && navigate(`/reserve?locker=${encodeURIComponent(locker.id)}`)}
                  >
                    {/* Background Highlight for available items on hover */}
                    {isAvail && <div className="absolute inset-0 bg-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />}
                    
                    <div className="flex justify-between items-start mb-2 relative z-10">
-                      <span className="text-lg font-bold text-slate-800">{locker.id}</span>
+                      <span className="text-lg sm:text-xl font-bold text-slate-800">{locker.id}</span>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium ${badgeClass}`}>
-                        {isAvail ? <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> : 
-                         locker.status === "Maintenance" ? <div className="w-1.5 h-1.5 rounded-full bg-slate-500"></div> :
+                        {isAvail ? <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> : 
+                         locker.status === "Maintenance" ? <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div> :
                          <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>}
                         {locker.status}
                       </span>
@@ -172,7 +172,7 @@ function Lockers() {
                      disabled={!isAvail}
                      className={`relative z-10 w-full py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
                        isAvail 
-                         ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md" 
+                         ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-sm hover:shadow-md" 
                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
                      }`}
                    >

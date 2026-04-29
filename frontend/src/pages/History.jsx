@@ -30,14 +30,14 @@ export default function History() {
   );
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-4 sm:space-y-6">
 
 
       {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{error}</div>}
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div className="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
-          <h2 className="text-lg font-semibold text-slate-800">Transaction Log</h2>
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden hover:-translate-y-1">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-200 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-slate-800">Transaction Log</h2>
           {history.length > 0 && (
             <input 
               type="text" 

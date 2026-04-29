@@ -92,7 +92,7 @@ function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium shadow-sm disabled:opacity-50 flex justify-center items-center"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-sm disabled:opacity-50 flex justify-center items-center"
             >
               {submitting ? (
                 <>

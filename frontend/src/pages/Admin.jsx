@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, apiText } from "../api/client";
+import toast from "react-hot-toast";
 
 export default function Admin() {
   const [overview, setOverview] = useState(null);
@@ -78,7 +79,32 @@ export default function Admin() {
       setFormError("Please enter a locker code.");
       return;
     }
-    if (!window.confirm(`Force release resource ${lockerCodeInput}?`)) return;
+    
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="font-medium text-slate-800">Force release resource {lockerCodeInput}?</p>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => {
+              toast.dismiss(t.id);
+              executeForceRelease();
+            }}
+            className="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+          >
+            Confirm
+          </button>
+          <button 
+            onClick={() => toast.dismiss(t.id)}
+            className="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-200 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
+  };
+
+  const executeForceRelease = async () => {
     setBusy(true);
     setFormError("");
     setActionSuccess("");
@@ -87,9 +113,11 @@ export default function Admin() {
         method: "POST",
         body: { lockerCode: lockerCodeInput.toUpperCase() },
       });
+      toast.success(`Resource ${lockerCodeInput} was force released.`);
       setActionSuccess(`Resource ${lockerCodeInput} was force released.`);
       load();
     } catch (e) {
+      toast.error(e.message || "Failed to force release.");
       setFormError(e.message || "Failed to force release.");
     } finally {
       setBusy(false);
@@ -97,52 +125,52 @@ export default function Admin() {
   };
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-6 sm:space-y-8">
 
       {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{error}</div>}
       {formError && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{formError}</div>}
       {actionSuccess && <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl shadow-sm border border-emerald-100">{actionSuccess}</div>}
 
       {/* Top Stats Banner */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-6 hover:-translate-y-1">
            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Total Capacity</p>
-           <h2 className="text-3xl font-bold text-slate-900">{overview?.lockerCounts?.total || 0}</h2>
+           <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">{overview?.lockerCounts?.total || 0}</h2>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-6 hover:-translate-y-1">
            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Available Units</p>
-           <h2 className="text-3xl font-bold text-emerald-600">{overview?.lockerCounts?.available || 0}</h2>
+           <h2 className="text-2xl sm:text-3xl font-bold text-green-600">{overview?.lockerCounts?.available || 0}</h2>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-6 hover:-translate-y-1">
            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Active Assignments</p>
-           <h2 className="text-3xl font-bold text-amber-600">{overview?.lockerCounts?.occupied || 0}</h2>
+           <h2 className="text-2xl sm:text-3xl font-bold text-red-600">{overview?.lockerCounts?.occupied || 0}</h2>
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-6 hover:-translate-y-1">
            <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Maintenance</p>
-           <h2 className="text-3xl font-bold text-slate-400">{overview?.lockerCounts?.maintenance || 0}</h2>
+           <h2 className="text-2xl sm:text-3xl font-bold text-yellow-600">{overview?.lockerCounts?.maintenance || 0}</h2>
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
         {/* Resource Status Grid */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow lg:w-2/3 hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden">
-          <div className="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
-             <span className="text-lg font-semibold text-slate-800">Resource Map</span>
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex-grow lg:w-2/3 overflow-hidden">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-200 bg-white flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+             <span className="text-lg sm:text-xl font-semibold text-slate-800">Resource Map</span>
              <div className="flex gap-4 text-xs font-medium text-slate-500">
-                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div> Available</span>
-                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div> Occupied</span>
-                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div> Maint</span>
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-green-500"></div> Available</span>
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-red-500"></div> Occupied</span>
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div> Maint</span>
              </div>
           </div>
-          <div className="p-6 bg-slate-50 min-h-[200px]">
+          <div className="p-4 sm:p-6 bg-slate-50 min-h-[200px]">
              {loading ? <div className="animate-pulse h-12 bg-slate-200 rounded"></div> : (
                <div className="flex flex-wrap gap-3">
                  {lockers.map((l) => {
                     let bgColor = "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300";
                     if (l.status === "AVAILABLE") {
-                      bgColor = "bg-emerald-500 text-white border-emerald-600 shadow-sm hover:bg-emerald-600 hover:shadow-md";
+                      bgColor = "bg-green-500 text-white border-green-600 shadow-sm hover:bg-green-600 hover:shadow-md";
                     } else if (l.status === "OCCUPIED") {
-                      bgColor = "bg-amber-500 text-white border-amber-600 shadow-sm hover:bg-amber-600 hover:shadow-md";
+                      bgColor = "bg-red-500 text-white border-red-600 shadow-sm hover:bg-red-600 hover:shadow-md";
                     }
                     return (
                       <div 
@@ -161,11 +189,11 @@ export default function Admin() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 lg:w-1/3 hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col">
-          <div className="px-6 py-5 border-b border-slate-200 bg-white">
-            <span className="text-lg font-semibold text-slate-800">Administrative Actions</span>
+        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 lg:w-1/3 flex flex-col overflow-hidden">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-200 bg-white">
+            <span className="text-lg sm:text-xl font-semibold text-slate-800">Administrative Actions</span>
           </div>
-          <div className="p-6 flex flex-col flex-grow">
+          <div className="p-4 sm:p-6 flex flex-col flex-grow">
             <div className="mb-5">
                <label className="block text-sm font-medium text-slate-600 mb-2">Resource ID</label>
                <input 
@@ -192,9 +220,9 @@ export default function Admin() {
       </div>
 
       {/* Audit Logs */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-        <div className="px-6 py-5 border-b border-slate-200 bg-white flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-           <span className="text-lg font-semibold text-slate-800">System Audit Logs</span>
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden hover:-translate-y-1">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-200 bg-white flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+           <span className="text-lg sm:text-xl font-semibold text-slate-800">System Audit Logs</span>
            <div className="flex gap-3 items-center w-full sm:w-auto">
              <input 
                type="text" 

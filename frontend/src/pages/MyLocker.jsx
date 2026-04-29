@@ -47,7 +47,32 @@ export default function MyLocker() {
   }, [booking]);
 
   const handleRelease = async () => {
-    if (!booking || !window.confirm("Release this locker now?")) return;
+    if (!booking) return;
+    toast((t) => (
+      <div className="flex flex-col gap-3">
+        <p className="font-medium text-slate-800">Release this locker now?</p>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => {
+              toast.dismiss(t.id);
+              executeRelease();
+            }}
+            className="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+          >
+            Release
+          </button>
+          <button 
+            onClick={() => toast.dismiss(t.id)}
+            className="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-200 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
+  };
+
+  const executeRelease = async () => {
     setActionError("");
     setBusy(true);
     try {
@@ -84,7 +109,7 @@ export default function MyLocker() {
     : { h: 0, m: 0, s: 0, expired: true };
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full flex flex-col items-center">
+    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full flex flex-col items-center">
       <div className="w-full max-w-4xl mb-6 flex justify-end items-center">
          {booking && !loading && (
            <span className="bg-emerald-100 text-emerald-800 text-sm font-medium px-3 py-1 rounded-full">
@@ -114,7 +139,7 @@ export default function MyLocker() {
             </div>
             <h3 className="text-lg font-medium text-slate-900 mb-2">No Active Assignment</h3>
             <p className="text-slate-500 mb-6">You don't have any locker assigned to you right now.</p>
-            <Link to="/reserve" className="bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium inline-block shadow-sm hover:shadow-md">
+            <Link to="/reserve" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md w-full sm:w-auto">
               Find a Resource
             </Link>
           </motion.div>
@@ -124,11 +149,11 @@ export default function MyLocker() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 flex-1 max-w-2xl"
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 sm:p-8 flex-1 max-w-2xl hover:-translate-y-1"
             >
               <div className="border-b border-slate-100 pb-6 mb-6">
                 <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Time Remaining</p>
-                <div className={`text-4xl sm:text-5xl font-bold font-mono tracking-tight ${rem.expired ? "text-red-500" : "text-slate-900"}`}>
+                <div className={`text-4xl sm:text-5xl lg:text-6xl font-bold font-mono tracking-tight ${rem.expired ? "text-red-500" : "text-slate-900"}`}>
                   {rem.h.toString().padStart(2, "0")}:{rem.m.toString().padStart(2, "0")}:{rem.s.toString().padStart(2, "0")}
                 </div>
               </div>
@@ -136,12 +161,12 @@ export default function MyLocker() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                 <div>
                   <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Resource ID</p>
-                  <p className="text-2xl font-bold text-slate-800">{booking.lockerCode}</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-slate-800">{booking.lockerCode}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">One-Time Passcode</p>
                   <div className="bg-slate-50 border border-slate-200 rounded-lg py-2 px-4 inline-block">
-                    <p className="text-2xl font-mono tracking-[0.2em] font-semibold text-slate-800">{booking.otpCode}</p>
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-mono tracking-[0.2em] font-semibold text-slate-800">{booking.otpCode}</p>
                   </div>
                 </div>
               </div>
@@ -149,7 +174,7 @@ export default function MyLocker() {
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100">
                 <motion.button 
                   whileTap={{ scale: 0.95 }}
-                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2" 
+                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2 w-full sm:w-auto" 
                   onClick={handleExtend} 
                   disabled={busy}
                 >
@@ -158,7 +183,7 @@ export default function MyLocker() {
                 </motion.button>
                 <motion.button 
                   whileTap={{ scale: 0.95 }}
-                  className="bg-red-50 border border-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2" 
+                  className="bg-red-50 border border-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2 w-full sm:w-auto" 
                   onClick={handleRelease} 
                   disabled={busy}
                 >
@@ -173,14 +198,14 @@ export default function MyLocker() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 w-full lg:w-80 flex flex-col items-center justify-center"
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 sm:p-8 w-full lg:w-80 flex flex-col items-center justify-center hover:-translate-y-1"
             >
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 inline-block">
                 <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={180} level="M" />
               </div>
               <h3 className="text-lg font-semibold text-slate-800 mb-2">Access Token</h3>
               <p className="text-sm text-slate-500 text-center">Scan this QR code at the terminal scanner to unlock your resource.</p>
-            </div>
+            </motion.div>
           </div>
         )}
       </div>
