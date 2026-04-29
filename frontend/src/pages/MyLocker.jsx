@@ -1,6 +1,8 @@
 import { QRCodeSVG } from "qrcode.react";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { api } from "../api/client";
 
 function remainingParts(endsAtIso, nowMs) {
@@ -51,8 +53,9 @@ export default function MyLocker() {
     try {
       await api(`/api/bookings/${booking.id}/release`, { method: "POST" });
       await load();
+      toast.success("Locker released");
     } catch (e) {
-      setActionError(e.message || "Release failed.");
+      toast.error(e.message || "Release failed.");
     } finally {
       setBusy(false);
     }
@@ -68,8 +71,9 @@ export default function MyLocker() {
         body: { hours: 1 },
       });
       setBooking(data.booking);
+      toast.success("Extended by 1 hour");
     } catch (e) {
-      setActionError(e.message || "Could not extend.");
+      toast.error(e.message || "Could not extend.");
     } finally {
       setBusy(false);
     }
@@ -100,7 +104,11 @@ export default function MyLocker() {
             <div className="w-64 h-4 bg-slate-200 rounded"></div>
           </div>
         ) : !booking ? (
-          <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center max-w-2xl mx-auto mt-10 hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center justify-center bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center max-w-2xl mx-auto mt-10"
+          >
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
               <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             </div>
@@ -109,11 +117,15 @@ export default function MyLocker() {
             <Link to="/reserve" className="bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium inline-block shadow-sm hover:shadow-md">
               Find a Resource
             </Link>
-          </div>
+          </motion.div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6 justify-center">
             {/* Main Timer and Details Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 flex-1 max-w-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 flex-1 max-w-2xl"
+            >
               <div className="border-b border-slate-100 pb-6 mb-6">
                 <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Time Remaining</p>
                 <div className={`text-4xl sm:text-5xl font-bold font-mono tracking-tight ${rem.expired ? "text-red-500" : "text-slate-900"}`}>
@@ -135,25 +147,34 @@ export default function MyLocker() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100">
-                <button 
-                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md" 
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2" 
                   onClick={handleExtend} 
                   disabled={busy}
                 >
+                  {busy ? <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div> : null}
                   Extend +1hr
-                </button>
-                <button 
-                  className="bg-red-50 border border-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md" 
+                </motion.button>
+                <motion.button 
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-red-50 border border-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md disabled:opacity-50 flex justify-center items-center gap-2" 
                   onClick={handleRelease} 
                   disabled={busy}
                 >
+                  {busy ? <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div> : null}
                   Release Locker
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
             
             {/* QR Code Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 w-full lg:w-80 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 w-full lg:w-80 flex flex-col items-center justify-center"
+            >
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 inline-block">
                 <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={180} level="M" />
               </div>

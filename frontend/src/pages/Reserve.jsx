@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import { api } from "../api/client";
 
 const durations = [
@@ -86,8 +88,10 @@ function Reserve() {
           note: note.trim() || undefined,
         },
       });
+      toast.success("Locker assigned successfully");
       navigate("/my-locker");
     } catch (err) {
+      toast.error(err.message || "Reservation failed.");
       setSubmitError(err.message || "Reservation failed.");
     } finally {
       setSubmitting(false);
@@ -105,7 +109,12 @@ function Reserve() {
       ) : null}
 
       <div className="max-w-2xl mx-auto">
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+        <motion.form 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onSubmit={handleSubmit} 
+          className="bg-white rounded-xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
+        >
           <div className="px-6 py-5 border-b border-slate-200 bg-white rounded-t-xl">
             <h2 className="text-lg font-semibold text-slate-800">Assignment Configuration</h2>
           </div>
@@ -201,19 +210,21 @@ function Reserve() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100 items-center justify-between">
-              <Link to="/lockers" className="w-full sm:w-auto px-6 py-2.5 border border-slate-200 text-slate-600 font-medium rounded-lg hover:bg-slate-50 transition-all duration-200 text-center shadow-sm hover:shadow-md">
-                Cancel
+              <Link to="/lockers" className="w-full sm:w-auto px-6 py-2.5 border border-slate-200 text-slate-600 font-medium rounded-lg hover:bg-slate-50 transition-all duration-200 text-center shadow-sm hover:shadow-md block">
+                <motion.span whileTap={{ scale: 0.95 }} className="block w-full h-full">Cancel</motion.span>
               </Link>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={submitting || loading || !selected || selected.status !== "Available"}
-                className="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
               >
+                {submitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : null}
                 {submitting ? "Processing..." : "Confirm Assignment"}
-              </button>
+              </motion.button>
             </div>
           </div>
-        </form>
+        </motion.form>
       </div>
     </div>
   );

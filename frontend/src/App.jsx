@@ -1,4 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "./components/Navbar";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -30,6 +32,7 @@ function AppContent() {
   
   return (
     <div className="flex min-h-screen w-full bg-slate-50">
+      <Toaster position="top-right" />
       {isAuthenticated && <Sidebar />}
       <div className="flex-1 flex flex-col min-w-0">
         {isAuthenticated && (
@@ -47,16 +50,27 @@ function AppContent() {
             </div>
           </header>
         )}
-        <main className="flex-1 overflow-y-auto">
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/lockers" element={<ProtectedRoute><Lockers /></ProtectedRoute>} />
-            <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
-            <Route path="/my-locker" element={<ProtectedRoute><MyLocker /></ProtectedRoute>} />
-            <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
-            <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
-          </Routes>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="min-h-full"
+            >
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/lockers" element={<ProtectedRoute><Lockers /></ProtectedRoute>} />
+                <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
+                <Route path="/my-locker" element={<ProtectedRoute><MyLocker /></ProtectedRoute>} />
+                <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+                <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+              </Routes>
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
     </div>
