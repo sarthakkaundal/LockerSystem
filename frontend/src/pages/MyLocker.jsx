@@ -80,63 +80,87 @@ export default function MyLocker() {
     : { h: 0, m: 0, s: 0, expired: true };
 
   return (
-    <div className="page-container">
-      <div className="page-header" style={{ justifyContent: "flex-start", gap: "16px" }}>
-         <h1 className="page-title">Active Assignment</h1>
-         {booking && !loading && <span className="status-badge status-available">Active</span>}
+    <div className="p-6 bg-slate-50 min-h-full flex flex-col items-center">
+      <div className="w-full max-w-4xl mb-6 flex justify-end items-center">
+         {booking && !loading && (
+           <span className="bg-emerald-100 text-emerald-800 text-sm font-medium px-3 py-1 rounded-full">
+             Active
+           </span>
+         )}
       </div>
 
-      {error && <div className="alert alert-error" style={{ margin: "16px" }}>{error}</div>}
-      {actionError && <div className="alert alert-error" style={{ margin: "16px" }}>{actionError}</div>}
+      <div className="w-full max-w-4xl">
+        {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 shadow-sm border border-red-100">{error}</div>}
+        {actionError && <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 shadow-sm border border-red-100">{actionError}</div>}
 
-      <div style={{ padding: "16px", display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "flex-start" }}>
         {loading ? (
-          <div className="skeleton skeleton-row" style={{ flex: 1, minWidth: "300px" }}></div>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-8 w-full max-w-md mx-auto animate-pulse flex flex-col items-center">
+            <div className="w-32 h-32 bg-slate-200 rounded-lg mb-6"></div>
+            <div className="w-48 h-8 bg-slate-200 rounded mb-4"></div>
+            <div className="w-64 h-4 bg-slate-200 rounded"></div>
+          </div>
         ) : !booking ? (
-          <div className="empty-state" style={{ flex: 1 }}>
-            <p className="empty-state-desc">No active assignments found.</p>
-            <Link to="/reserve" className="btn btn-primary mt-3">Find Resource</Link>
+          <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center max-w-2xl mx-auto mt-10 hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+              <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">No Active Assignment</h3>
+            <p className="text-slate-500 mb-6">You don't have any locker assigned to you right now.</p>
+            <Link to="/reserve" className="bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium inline-block shadow-sm hover:shadow-md">
+              Find a Resource
+            </Link>
           </div>
         ) : (
-          <>
-            <div className="panel" style={{ flex: 2, minWidth: "300px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
-              <div className="panel-header">Session Details</div>
-              <div className="panel-body">
-                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-color)", paddingBottom: "16px", marginBottom: "16px" }}>
-                  <div>
-                     <p className="form-label">Resource ID</p>
-                     <h2 style={{ fontSize: "20px", fontWeight: "600" }}>{booking.lockerCode}</h2>
+          <div className="flex flex-col lg:flex-row gap-6 justify-center">
+            {/* Main Timer and Details Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 flex-1 max-w-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div className="border-b border-slate-100 pb-6 mb-6">
+                <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Time Remaining</p>
+                <div className={`text-4xl sm:text-5xl font-bold font-mono tracking-tight ${rem.expired ? "text-red-500" : "text-slate-900"}`}>
+                  {rem.h.toString().padStart(2, "0")}:{rem.m.toString().padStart(2, "0")}:{rem.s.toString().padStart(2, "0")}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <div>
+                  <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Resource ID</p>
+                  <p className="text-2xl font-bold text-slate-800">{booking.lockerCode}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">One-Time Passcode</p>
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg py-2 px-4 inline-block">
+                    <p className="text-2xl font-mono tracking-[0.2em] font-semibold text-slate-800">{booking.otpCode}</p>
                   </div>
-                  <div style={{ textAlign: "right" }}>
-                     <p className="form-label">Time Remaining</p>
-                     <h2 style={{ fontSize: "24px", color: rem.expired ? "var(--error-text)" : "var(--text-main)", fontFamily: "monospace", letterSpacing: "1px" }}>
-                       {rem.h.toString().padStart(2, "0")}:{rem.m.toString().padStart(2, "0")}:{rem.s.toString().padStart(2, "0")}
-                     </h2>
-                  </div>
                 </div>
-                <div style={{ marginBottom: "24px" }}>
-                   <p className="form-label">One-Time Passcode</p>
-                   <div style={{ backgroundColor: "var(--bg-app)", padding: "12px", border: "1px solid var(--border-color)", fontFamily: "monospace", fontSize: "18px", letterSpacing: "4px" }}>
-                      {booking.otpCode}
-                   </div>
-                </div>
-                <div className="flex gap-2 pt-3" style={{ borderTop: "1px solid var(--border-color)" }}>
-                  <button className="btn btn-secondary flex-1" onClick={handleExtend} disabled={busy}>Extend +1hr</button>
-                  <button className="btn btn-primary flex-1" onClick={handleRelease} disabled={busy} style={{ backgroundColor: "var(--error-color)", borderColor: "var(--error-color)" }}>Release</button>
-                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100">
+                <button 
+                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md" 
+                  onClick={handleExtend} 
+                  disabled={busy}
+                >
+                  Extend +1hr
+                </button>
+                <button 
+                  className="bg-red-50 border border-red-100 text-red-600 px-4 py-2.5 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium flex-1 shadow-sm hover:shadow-md" 
+                  onClick={handleRelease} 
+                  disabled={busy}
+                >
+                  Release Locker
+                </button>
               </div>
             </div>
             
-            <div className="panel" style={{ flex: 1, minWidth: "250px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
-              <div className="panel-header">Access Token (QR)</div>
-              <div className="panel-body text-center" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                 <div style={{ border: "1px solid var(--border-color)", padding: "8px", backgroundColor: "#fff", display: "inline-block", marginBottom: "16px" }}>
-                    <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={160} level="M" />
-                 </div>
-                 <p className="form-label">Scan at terminal to unlock</p>
+            {/* QR Code Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8 w-full lg:w-80 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 inline-block">
+                <QRCodeSVG value={booking.qrPayload || "mock-qr"} size={180} level="M" />
               </div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">Access Token</h3>
+              <p className="text-sm text-slate-500 text-center">Scan this QR code at the terminal scanner to unlock your resource.</p>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

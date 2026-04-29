@@ -97,69 +97,58 @@ export default function Admin() {
   };
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1 className="page-title">System Administration</h1>
-      </div>
+    <div className="p-6 bg-slate-50 min-h-full space-y-8">
 
-      {error && <div className="alert alert-error" style={{ margin: "16px 16px 0 16px" }}>{error}</div>}
-      {formError && <div className="alert alert-error" style={{ margin: "16px 16px 0 16px" }}>{formError}</div>}
-      {actionSuccess && <div className="alert alert-success" style={{ margin: "16px 16px 0 16px" }}>{actionSuccess}</div>}
+      {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{error}</div>}
+      {formError && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{formError}</div>}
+      {actionSuccess && <div className="bg-emerald-50 text-emerald-700 p-4 rounded-xl shadow-sm border border-emerald-100">{actionSuccess}</div>}
 
       {/* Top Stats Banner */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ flex: 1, minWidth: '200px', padding: '12px 16px', borderRight: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
-           <p className="form-label" style={{ textTransform: 'uppercase', marginBottom: '2px' }}>Total Capacity</p>
-           <h2 style={{ fontSize: '20px', fontWeight: '400' }}>{overview?.lockerCounts?.total || 0}</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+           <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Total Capacity</p>
+           <h2 className="text-3xl font-bold text-slate-900">{overview?.lockerCounts?.total || 0}</h2>
         </div>
-        <div style={{ flex: 1, minWidth: '200px', padding: '12px 16px', borderRight: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
-           <p className="form-label" style={{ textTransform: 'uppercase', marginBottom: '2px' }}>Available Units</p>
-           <h2 style={{ fontSize: '20px', fontWeight: '400', color: 'var(--success-color)' }}>{overview?.lockerCounts?.available || 0}</h2>
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+           <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Available Units</p>
+           <h2 className="text-3xl font-bold text-emerald-600">{overview?.lockerCounts?.available || 0}</h2>
         </div>
-        <div style={{ flex: 1, minWidth: '200px', padding: '12px 16px', borderRight: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
-           <p className="form-label" style={{ textTransform: 'uppercase', marginBottom: '2px' }}>Active Assignments</p>
-           <h2 style={{ fontSize: '20px', fontWeight: '400', color: 'var(--warning-color)' }}>{overview?.lockerCounts?.occupied || 0}</h2>
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+           <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Active Assignments</p>
+           <h2 className="text-3xl font-bold text-amber-600">{overview?.lockerCounts?.occupied || 0}</h2>
         </div>
-        <div style={{ flex: 1, minWidth: '200px', padding: '12px 16px', backgroundColor: 'var(--bg-surface)' }}>
-           <p className="form-label" style={{ textTransform: 'uppercase', marginBottom: '2px' }}>Maintenance</p>
-           <h2 style={{ fontSize: '20px', fontWeight: '400', color: 'var(--text-muted)' }}>{overview?.lockerCounts?.maintenance || 0}</h2>
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+           <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2">Maintenance</p>
+           <h2 className="text-3xl font-bold text-slate-400">{overview?.lockerCounts?.maintenance || 0}</h2>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Resource Status Grid */}
-        <div className="panel" style={{ flex: 2, minWidth: '320px', borderRight: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
-          <div className="panel-header">
-             <span>Resource Map</span>
-             <div style={{ display: "flex", gap: "12px", fontSize: "11px", fontWeight: "normal" }}>
-                <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><div style={{ width: "8px", height: "8px", backgroundColor: "var(--success-color)" }}></div> Available</span>
-                <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><div style={{ width: "8px", height: "8px", backgroundColor: "var(--warning-color)" }}></div> Occupied</span>
-                <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><div style={{ width: "8px", height: "8px", backgroundColor: "var(--border-color)" }}></div> Maint</span>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow lg:w-2/3 hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
+             <span className="text-lg font-semibold text-slate-800">Resource Map</span>
+             <div className="flex gap-4 text-xs font-medium text-slate-500">
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div> Available</span>
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div> Occupied</span>
+                <span className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div> Maint</span>
              </div>
           </div>
-          <div className="panel-body" style={{ backgroundColor: '#f2f2f2', padding: '8px' }}>
-             {loading ? <div className="skeleton skeleton-row"></div> : (
-               <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+          <div className="p-6 bg-slate-50 min-h-[200px]">
+             {loading ? <div className="animate-pulse h-12 bg-slate-200 rounded"></div> : (
+               <div className="flex flex-wrap gap-3">
                  {lockers.map((l) => {
-                    let bgColor = "var(--border-color)";
-                    let color = "var(--text-main)";
+                    let bgColor = "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300";
                     if (l.status === "AVAILABLE") {
-                      bgColor = "var(--success-color)";
-                      color = "#fff";
+                      bgColor = "bg-emerald-500 text-white border-emerald-600 shadow-sm hover:bg-emerald-600 hover:shadow-md";
                     } else if (l.status === "OCCUPIED") {
-                      bgColor = "var(--warning-color)";
-                      color = "#fff";
+                      bgColor = "bg-amber-500 text-white border-amber-600 shadow-sm hover:bg-amber-600 hover:shadow-md";
                     }
                     return (
                       <div 
                         key={l.code}
                         onClick={() => setLockerCodeInput(l.code)}
-                        style={{ 
-                           width: "36px", height: "36px", backgroundColor: bgColor, color: color, 
-                           display: "flex", alignItems: "center", justifyContent: "center", 
-                           fontSize: "11px", fontWeight: "600", cursor: "pointer", 
-                           border: "1px solid rgba(0,0,0,0.1)", borderRadius: "2px"
-                        }}
+                        className={`w-12 h-12 rounded-lg flex items-center justify-center text-sm font-bold cursor-pointer border transition-all hover:scale-105 active:scale-95 ${bgColor}`}
                         title={`${l.code} - ${l.status}`}
                       >
                          {l.code}
@@ -172,79 +161,99 @@ export default function Admin() {
         </div>
 
         {/* Quick Actions */}
-        <div className="panel" style={{ flex: 1, minWidth: '250px', borderRight: 'none', borderBottom: '1px solid var(--border-color)' }}>
-          <div className="panel-header">Administrative Actions</div>
-          <div className="panel-body">
-            <div className="form-group">
-               <label className="form-label">Resource ID</label>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 lg:w-1/3 hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col">
+          <div className="px-6 py-5 border-b border-slate-200 bg-white">
+            <span className="text-lg font-semibold text-slate-800">Administrative Actions</span>
+          </div>
+          <div className="p-6 flex flex-col flex-grow">
+            <div className="mb-5">
+               <label className="block text-sm font-medium text-slate-600 mb-2">Resource ID</label>
                <input 
                  type="text" 
-                 className="form-input" 
+                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow" 
                  value={lockerCodeInput} 
                  onChange={e => setLockerCodeInput(e.target.value)} 
                  placeholder="e.g. A1"
                />
             </div>
             
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-               <button className="btn btn-secondary flex-1" onClick={() => toggleMaintenanceMode(true)} disabled={busy || loading}>Maint ON</button>
-               <button className="btn btn-secondary flex-1" onClick={() => toggleMaintenanceMode(false)} disabled={busy || loading}>Maint OFF</button>
+            <div className="flex gap-3 mb-6">
+               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={() => toggleMaintenanceMode(true)} disabled={busy || loading}>Maint ON</button>
+               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={() => toggleMaintenanceMode(false)} disabled={busy || loading}>Maint OFF</button>
             </div>
             
-            <button className="btn btn-primary btn-full" onClick={forceRelease} disabled={busy || loading} style={{ backgroundColor: 'var(--error-color)', borderColor: 'var(--error-color)' }}>
-               Force Release
-            </button>
+            <div className="mt-auto">
+              <button className="w-full bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={forceRelease} disabled={busy || loading}>
+                 Force Release
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Audit Logs */}
-      <div className="panel" style={{ borderRight: 'none', borderBottom: 'none', flex: 1 }}>
-        <div className="panel-header">
-           <span>System Audit Logs</span>
-           <div style={{ display: "flex", gap: "8px" }}>
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        <div className="px-6 py-5 border-b border-slate-200 bg-white flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+           <span className="text-lg font-semibold text-slate-800">System Audit Logs</span>
+           <div className="flex gap-3 items-center w-full sm:w-auto">
              <input 
                type="text" 
-               className="form-input" 
-               style={{ width: "200px", height: "24px", padding: "2px 6px" }} 
+               className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow" 
                placeholder="Filter records..."
                value={logSearch}
                onChange={e => setLogSearch(e.target.value)}
              />
-             <button className="btn btn-primary" style={{ padding: "2px 8px", fontSize: "11px" }} onClick={exportCsv}>
+             <button className="bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md whitespace-nowrap" onClick={exportCsv}>
                 Export CSV
              </button>
            </div>
         </div>
         
-        <div className="table-wrapper" style={{ borderTop: 'none' }}>
-           <table className="table">
+        <div className="overflow-x-auto">
+           <table className="w-full text-left border-collapse">
               <thead>
-                 <tr>
-                    <th>User ID</th>
-                    <th>Resource</th>
-                    <th>Action</th>
-                    <th>Timestamp</th>
-                    <th>Details</th>
+                 <tr className="border-b border-slate-200">
+                    <th className="px-6 py-4 text-sm font-medium text-slate-600">User ID</th>
+                    <th className="px-6 py-4 text-sm font-medium text-slate-600">Resource</th>
+                    <th className="px-6 py-4 text-sm font-medium text-slate-600">Action</th>
+                    <th className="px-6 py-4 text-sm font-medium text-slate-600">Timestamp</th>
+                    <th className="px-6 py-4 text-sm font-medium text-slate-600">Details</th>
                  </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                  {loading ? (
-                    <tr><td colSpan="5"><div className="skeleton skeleton-row"></div></td></tr>
+                    <tr><td colSpan="5" className="p-6"><div className="animate-pulse h-8 bg-slate-100 rounded"></div></td></tr>
                  ) : logs.length === 0 ? (
-                    <tr><td colSpan="5" className="text-center" style={{ padding: '24px' }}>No records found.</td></tr>
+                    <tr>
+                      <td colSpan="5" className="px-6 py-12 text-center">
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="bg-slate-100 rounded-full p-4 mb-4">
+                            <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                          </div>
+                          <p className="text-slate-500 font-medium">No records found.</p>
+                        </div>
+                      </td>
+                    </tr>
                  ) : (
                     logs.filter(log => 
                       (log.actorEmail || "System").toLowerCase().includes(logSearch.toLowerCase()) ||
                       log.lockerCode.toLowerCase().includes(logSearch.toLowerCase()) ||
                       log.action.toLowerCase().includes(logSearch.toLowerCase())
                     ).map(log => (
-                       <tr key={log.id}>
-                          <td style={{ fontWeight: 600 }}>{log.actorEmail || "System"}</td>
-                          <td>{log.lockerCode}</td>
-                          <td><span className={`status-badge ${log.action === 'BOOKED' ? 'status-occupied' : log.action === 'RELEASED' ? 'status-maintenance' : 'status-available'}`}>{log.action}</span></td>
-                          <td>{new Date(log.createdAt).toLocaleString()}</td>
-                          <td>{log.details || "-"}</td>
+                       <tr key={log.id} className="even:bg-slate-50 hover:bg-slate-100 transition-colors duration-150">
+                          <td className="px-6 py-4 text-sm font-semibold text-slate-800">{log.actorEmail || "System"}</td>
+                          <td className="px-6 py-4 text-sm text-slate-800">{log.lockerCode}</td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${
+                              log.action === 'BOOKED' ? 'bg-amber-100 text-amber-800' : 
+                              log.action === 'RELEASED' ? 'bg-slate-100 text-slate-800' : 
+                              'bg-emerald-100 text-emerald-800'
+                            }`}>
+                              {log.action}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-500">{new Date(log.createdAt).toLocaleString()}</td>
+                          <td className="px-6 py-4 text-sm text-slate-600">{log.details || "-"}</td>
                        </tr>
                     ))
                  )}

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Sidebar from "./components/Navbar";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -14,28 +14,40 @@ import { useAuth } from "./context/AuthContext";
 
 function AppContent() {
   const { isAuthenticated, user, logout } = useAuth();
+  const location = useLocation();
+  
+  const getPageHeading = () => {
+    switch (location.pathname) {
+      case "/dashboard": return "System Dashboard";
+      case "/lockers": return "Locker Allocation";
+      case "/reserve": return "Resource Assignment";
+      case "/my-locker": return "Active Assignment";
+      case "/history": return "Booking History";
+      case "/admin": return "System Administration";
+      default: return "System Dashboard";
+    }
+  };
   
   return (
-    <div className="app-wrapper">
+    <div className="flex min-h-screen w-full bg-slate-50">
       {isAuthenticated && <Sidebar />}
-      <div className="main-wrapper">
+      <div className="flex-1 flex flex-col min-w-0">
         {isAuthenticated && (
-          <header className="topbar">
-            <div style={{ fontSize: "14px", fontWeight: "600", letterSpacing: "1px" }}>ENTERPRISE WORKSPACE</div>
-            <div className="flex items-center gap-3">
-              <span className="nav-user">{user?.email}</span>
+          <header className="flex justify-between items-center px-6 h-16 bg-white sticky top-0 z-40">
+            <div className="text-lg font-semibold text-slate-800">{getPageHeading()}</div>
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">{user?.email}</span>
               <button
                 type="button"
                 onClick={logout}
-                className="btn"
-                style={{ backgroundColor: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)" }}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
               >
                 Log out
               </button>
             </div>
           </header>
         )}
-        <main className="container">
+        <main className="flex-1 overflow-y-auto">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

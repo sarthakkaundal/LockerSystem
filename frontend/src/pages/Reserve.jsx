@@ -95,89 +95,99 @@ function Reserve() {
   };
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1 className="page-title">Resource Assignment</h1>
-      </div>
+    <div className="p-6 bg-slate-50 min-h-full space-y-6">
+
 
       {error ? (
-        <div className="alert alert-error" style={{ margin: "16px" }}>
+        <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">
           {error}
         </div>
       ) : null}
 
-      <div style={{ padding: "16px" }}>
-        <form onSubmit={handleSubmit} className="panel" style={{ maxWidth: "600px", borderBottom: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
-          <div className="panel-header">Assignment Configuration</div>
-          <div className="panel-body">
+      <div className="max-w-2xl mx-auto">
+        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+          <div className="px-6 py-5 border-b border-slate-200 bg-white rounded-t-xl">
+            <h2 className="text-lg font-semibold text-slate-800">Assignment Configuration</h2>
+          </div>
+          <div className="p-6 sm:p-8">
             {submitError ? (
-              <div className="alert alert-error">
+              <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 border border-red-100 text-sm">
                 {submitError}
               </div>
             ) : null}
 
-            <div className="form-group">
-              <label htmlFor="locker" className="form-label">
+            <div className="mb-6">
+              <label htmlFor="locker" className="block text-sm font-medium text-slate-600 mb-2">
                 Select Resource
               </label>
               {loading ? (
-                <div className="skeleton skeleton-row"></div>
+                <div className="animate-pulse h-10 bg-slate-100 rounded-lg"></div>
               ) : (
-                <select
-                  id="locker"
-                  value={selectedId}
-                  onChange={(e) => setSelectedId(e.target.value)}
-                  className="form-input"
-                >
-                  {available.length === 0 ? (
-                    <option value="">No resources available</option>
-                  ) : (
-                    available.map((l) => (
-                      <option key={l.id} value={l.id}>
-                        {l.id} — {l.location}
-                      </option>
-                    ))
-                  )}
-                </select>
+                <div className="relative">
+                  <select
+                    id="locker"
+                    value={selectedId}
+                    onChange={(e) => setSelectedId(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                  >
+                    {available.length === 0 ? (
+                      <option value="">No resources available</option>
+                    ) : (
+                      available.map((l) => (
+                        <option key={l.id} value={l.id}>
+                          {l.id} — {l.location}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
               )}
               {paramId && fromParam && fromParam.status !== "Available" ? (
-                <p className="mt-2" style={{ fontSize: '11px', color: 'var(--error-text)', fontWeight: 500 }}>
+                <p className="mt-2 text-xs font-medium text-red-500">
                   Resource {paramId} is unavailable.
                 </p>
               ) : null}
             </div>
 
             {selected ? (
-              <div style={{ backgroundColor: "var(--bg-app)", border: "1px solid var(--border-color)", padding: "12px", marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontWeight: "600" }}>{selected.id}</span>
-                <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>{selected.location}</span>
+              <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 mb-6 flex justify-between items-center">
+                <span className="font-semibold text-indigo-900">{selected.id}</span>
+                <span className="text-sm font-medium text-indigo-700">{selected.location}</span>
               </div>
             ) : null}
 
-            <div className="form-group">
-              <label htmlFor="duration" className="form-label">
+            <div className="mb-6">
+              <label htmlFor="duration" className="block text-sm font-medium text-slate-600 mb-2">
                 Duration
               </label>
-              <select
-                id="duration"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="form-input"
-              >
-                {durations.map((d) => (
-                  <option key={d.value} value={d.value}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="duration"
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                >
+                  {durations.map((d) => (
+                    <option key={d.value} value={d.value}>
+                      {d.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </div>
+              </div>
             </div>
 
-            <div className="form-group" style={{ marginBottom: "24px" }}>
+            <div className="mb-8">
               <div className="flex justify-between items-end mb-2">
-                <label htmlFor="note" className="form-label" style={{ marginBottom: 0 }}>
-                    Reference Note
+                <label htmlFor="note" className="block text-sm font-medium text-slate-600">
+                  Reference Note
                 </label>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{note.length}/500</span>
+                <span className="text-xs text-slate-400">{note.length}/500</span>
               </div>
               <textarea
                 id="note"
@@ -185,18 +195,19 @@ function Reserve() {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={500}
-                className="form-input"
+                placeholder="Optional notes for this assignment..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow resize-none"
               />
             </div>
 
-            <div className="flex gap-2 justify-between" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "16px", marginTop: "16px" }}>
-              <Link to="/lockers" className="btn btn-secondary">
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100 items-center justify-between">
+              <Link to="/lockers" className="w-full sm:w-auto px-6 py-2.5 border border-slate-200 text-slate-600 font-medium rounded-lg hover:bg-slate-50 transition-all duration-200 text-center shadow-sm hover:shadow-md">
                 Cancel
               </Link>
               <button
                 type="submit"
                 disabled={submitting || loading || !selected || selected.status !== "Available"}
-                className="btn btn-primary"
+                className="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? "Processing..." : "Confirm Assignment"}
               </button>
