@@ -159,11 +159,11 @@ function Lockers() {
                       </span>
                    </div>
                    
-                   <div className="flex-1 relative z-10">
-                     <p className="text-sm text-slate-500 mb-6">{locker.location}</p>
+                   <div className="flex-1 relative z-10 pb-8">
+                     <p className="text-sm text-slate-500">{locker.location}</p>
                      
-                     <div className="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-300">
-                       <p className="text-xs text-slate-400 mb-4">Click to reserve this unit for a designated duration.</p>
+                     <div className="absolute bottom-0 left-0 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                       <p className="text-xs text-slate-400 mb-2">Click to reserve this unit for a designated duration.</p>
                      </div>
                    </div>
                    
