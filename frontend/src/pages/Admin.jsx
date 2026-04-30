@@ -167,10 +167,12 @@ export default function Admin() {
                <div className="flex flex-wrap gap-3">
                  {lockers.map((l) => {
                     let bgColor = "bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300";
-                    if (l.status === "AVAILABLE") {
+                    if (l.status === "Available") {
                       bgColor = "bg-green-500 text-white border-green-600 shadow-sm hover:bg-green-600 hover:shadow-md";
-                    } else if (l.status === "OCCUPIED") {
+                    } else if (l.status === "Occupied") {
                       bgColor = "bg-red-500 text-white border-red-600 shadow-sm hover:bg-red-600 hover:shadow-md";
+                    } else if(l.status === "Maintenance"){
+                      bgColor = "bg-yellow-500 text-white border-yellow-600 shadow-sm hover:bg-yellow-600 hover:shadow-md";
                     }
                     return (
                       <div 
