@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js",
-    "build": "npx prisma generate && npx prisma db push",
+    "start": "npx prisma db push && node src/server.js",
+    "build": "npx prisma generate",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio"
