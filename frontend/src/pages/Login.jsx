@@ -2,23 +2,26 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated, user } = useAuth();
+  const { login, register, isAuthenticated, user } = useAuth();
   
   const [isLogin, setIsLogin] = useState(true);
 
   // Login form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   
   // Register form state
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [regConfirmPassword, setRegConfirmPassword] = useState("");
+  const [showRegPassword, setShowRegPassword] = useState(false);
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -64,7 +67,7 @@ function Login() {
     }
     setSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await register(regName.trim(), regEmail.trim(), regPassword);
       setError("");
       alert("Registration successful! Please sign in with your new credentials.");
       setIsLogin(true);
@@ -174,15 +177,25 @@ function Login() {
                         <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
                           Password
                         </label>
-                        <input
-                          id="password"
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="••••••••"
-                        />
+                        <div className="relative">
+                          <input
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            disabled={submitting}
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            disabled={submitting}
+                          >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
                       </div>
 
                       <button
@@ -260,30 +273,42 @@ function Login() {
                         <label htmlFor="regPassword" className="block text-sm font-medium text-slate-700 mb-1">
                           Password
                         </label>
-                        <input
-                          id="regPassword"
-                          type="password"
-                          value={regPassword}
-                          onChange={(e) => setRegPassword(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="••••••••"
-                        />
+                        <div className="relative">
+                          <input
+                            id="regPassword"
+                            type={showRegPassword ? "text" : "password"}
+                            value={regPassword}
+                            onChange={(e) => setRegPassword(e.target.value)}
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            disabled={submitting}
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowRegPassword(!showRegPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            disabled={submitting}
+                          >
+                            {showRegPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
                       </div>
 
                       <div>
                         <label htmlFor="regConfirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
                           Confirm Password
                         </label>
-                        <input
-                          id="regConfirmPassword"
-                          type="password"
-                          value={regConfirmPassword}
-                          onChange={(e) => setRegConfirmPassword(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="••••••••"
-                        />
+                        <div className="relative">
+                          <input
+                            id="regConfirmPassword"
+                            type={showRegPassword ? "text" : "password"}
+                            value={regConfirmPassword}
+                            onChange={(e) => setRegConfirmPassword(e.target.value)}
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            disabled={submitting}
+                            placeholder="••••••••"
+                          />
+                        </div>
                       </div>
 
                       <button

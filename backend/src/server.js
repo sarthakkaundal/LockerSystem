@@ -101,6 +101,47 @@ app.post("/api/auth/login", loginRateLimiter, validateBody(loginSchema), async (
   });
 });
 
+const registerSchema = z.object({
+  email: z.string().email("Invalid email address").transform(e => e.trim().toLowerCase()),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  name: z.string().min(1, "Name is required").max(100),
+});
+
+import bcrypt from "bcryptjs";
+
+app.post("/api/auth/register", loginRateLimiter, validateBody(registerSchema), async (req, res) => {
+  const { email, password, name } = req.body;
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  
+  if (existingUser) {
+    return res.status(409).json({ error: "User with this email already exists." });
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  
+  const newUser = await prisma.user.create({
+    data: {
+      email,
+      passwordHash,
+      name,
+      role: "STUDENT", // Default role
+    },
+  });
+
+  const token = signToken(newUser);
+  res.status(201).json({
+    token,
+    user: {
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name,
+      profilePhoto: newUser.profilePhoto,
+      role: newUser.role,
+      studentId: newUser.studentId,
+    },
+  });
+});
+
 app.get("/api/users/profile", authMiddleware(true), async (req, res) => {
   const userId = req.user.sub;
   const user = await prisma.user.findUnique({ where: { id: userId } });

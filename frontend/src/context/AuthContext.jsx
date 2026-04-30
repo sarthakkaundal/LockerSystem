@@ -33,6 +33,17 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
+  const register = useCallback(async (name, email, password) => {
+    const data = await api("/api/auth/register", {
+      method: "POST",
+      body: { name, email, password },
+    });
+    persistSession(data.token, data.user);
+    setToken(data.token);
+    setUser(data.user);
+    return data.user;
+  }, []);
+
   const logout = useCallback(() => {
     clearSession();
     setToken(null);
@@ -63,10 +74,11 @@ export function AuthProvider({ children }) {
       token,
       isAuthenticated: Boolean(token && user),
       login,
+      register,
       logout,
       updateProfile,
     }),
-    [user, token, login, logout, updateProfile]
+    [user, token, login, register, logout, updateProfile]
   );
 
   return (
