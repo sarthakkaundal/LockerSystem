@@ -163,7 +163,13 @@ function Lockers() {
                      <p className="text-sm text-slate-500">{locker.location}</p>
                      
                      <div className="absolute bottom-0 left-0 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                     {locker.status === "Available" ? (
                        <p className="text-xs text-slate-400 mb-2">Click to reserve this unit for a designated duration.</p>
+                     ) : locker.status === "Maintenance" ? (
+                       <p className="text-xs text-slate-400 mb-2">This unit is under maintenance.</p>
+                     ) : (
+                       <p className="text-xs text-slate-400 mb-2">This unit is occupied.</p>
+                     )}
                      </div>
                    </div>
                    
