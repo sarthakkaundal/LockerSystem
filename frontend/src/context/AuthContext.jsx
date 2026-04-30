@@ -39,6 +39,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const updateProfile = useCallback(async (data) => {
+    const res = await api("/api/users/profile", {
+      method: "PUT",
+      body: data,
+    });
+    persistSession(token, res.user);
+    setUser(res.user);
+    return res.user;
+  }, [token]);
+
   useEffect(() => {
     setUnauthorizedHandler(() => {
       setToken(null);
@@ -54,8 +64,9 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(token && user),
       login,
       logout,
+      updateProfile,
     }),
-    [user, token, login, logout]
+    [user, token, login, logout, updateProfile]
   );
 
   return (

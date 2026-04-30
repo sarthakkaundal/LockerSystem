@@ -4,10 +4,12 @@ import { LayoutDashboard, Box, User, History as HistoryIcon, Settings } from "lu
 import logoUrl from "../assets/logos/vaulta_logo.png";
 
 import { useState } from "react";
+import ProfileModal from "./ProfileModal";
 
 export default function Navbar({ isOpen, setIsOpen }) {
   const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const linkClass = ({ isActive }) => 
     `flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start gap-4 pl-8 lg:pl-16 pr-4'} py-3 text-base font-bold rounded-lg transition-all duration-200 hover:translate-x-1 hover:bg-slate-800 hover:text-white w-full ${
@@ -69,19 +71,29 @@ export default function Navbar({ isOpen, setIsOpen }) {
       </button>
 
       {user?.email && (
-        <div className={`p-4 border-t border-slate-800 ${isCollapsed ? 'flex justify-center' : ''}`}>
-          <div className={`flex items-center ${isCollapsed ? 'justify-center p-0' : 'gap-3 px-4 py-3'} rounded-lg bg-slate-800/50 hover:bg-slate-800 transition-colors w-full`}>
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-sm" title={isCollapsed ? user.email : ""}>
-              {user.email.charAt(0).toUpperCase()}
-            </div>
-            {!isCollapsed && (
-              <div className="flex flex-col min-w-0 flex-1">
-                <span className="text-xs font-medium text-slate-400 truncate">Logged in as</span>
-                <span className="text-sm text-slate-200 truncate font-medium">{user.email}</span>
+        <>
+          <div 
+            onClick={() => setIsProfileModalOpen(true)}
+            className={`p-4 border-t border-slate-800 cursor-pointer ${isCollapsed ? 'flex justify-center' : ''}`}
+          >
+            <div className={`flex items-center ${isCollapsed ? 'justify-center p-0' : 'gap-3 px-4 py-3'} rounded-lg bg-slate-800/50 hover:bg-slate-700 transition-colors w-full group`}>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-sm overflow-hidden" title={isCollapsed ? user.email : ""}>
+                {user?.profilePhoto ? (
+                  <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  user?.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()
+                )}
               </div>
-            )}
+              {!isCollapsed && (
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="text-xs font-medium text-slate-400 truncate group-hover:text-slate-300 transition-colors">Logged in as</span>
+                  <span className="text-sm text-slate-200 truncate font-medium group-hover:text-white transition-colors">{user?.name || user.email}</span>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+          <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
+        </>
       )}
     </aside>
     </>

@@ -24,7 +24,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:5173",
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const validateBody = (schema) => (req, res, next) => {
   try {
@@ -93,8 +93,52 @@ app.post("/api/auth/login", loginRateLimiter, validateBody(loginSchema), async (
     user: {
       id: user.id,
       email: user.email,
+      name: user.name,
+      profilePhoto: user.profilePhoto,
       role: user.role,
       studentId: user.studentId,
+    },
+  });
+});
+
+app.get("/api/users/profile", authMiddleware(true), async (req, res) => {
+  const userId = req.user.sub;
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  res.json({
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      profilePhoto: user.profilePhoto,
+      role: user.role,
+      studentId: user.studentId,
+    },
+  });
+});
+
+const profileSchema = z.object({
+  name: z.string().max(100).optional().nullable(),
+  profilePhoto: z.string().optional().nullable(),
+});
+
+app.put("/api/users/profile", authMiddleware(true), validateBody(profileSchema), async (req, res) => {
+  const userId = req.user.sub;
+  const { name, profilePhoto } = req.body;
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { name, profilePhoto },
+  });
+  res.json({
+    user: {
+      id: updatedUser.id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      profilePhoto: updatedUser.profilePhoto,
+      role: updatedUser.role,
+      studentId: updatedUser.studentId,
     },
   });
 });
