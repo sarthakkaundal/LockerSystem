@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole } from "lucide-react";
+import vaultaLogo from "../assets/logos/vaulta_logo.png";
 
 function Login() {
   const navigate = useNavigate();
@@ -337,13 +338,17 @@ function Login() {
 
           {/* Branding Panel (Slides left on Register) */}
           <div 
-            className={`hidden md:flex w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 p-12 text-white items-center justify-center flex-col text-center absolute top-0 h-full z-20 left-1/2 transition-transform duration-700 ease-in-out ${
+            className={`hidden md:flex w-1/2 bg-slate-950 p-12 text-white items-center justify-center flex-col text-center absolute top-0 h-full z-20 left-1/2 transition-transform duration-700 ease-in-out ${
               !isLogin ? '-translate-x-full' : 'translate-x-0'
             }`}
           >
             {/* Decorative shapes */}
             <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 rounded-full bg-white opacity-10 blur-2xl pointer-events-none"></div>
+            {/* Centered Logo */}
+            <div className="z-10 mb-8 flex flex-col items-center">
+              <img src={vaultaLogo} alt="Vaulta Logo" className="h-20 drop-shadow-2xl" />
+            </div>
             
             <AnimatePresence mode="wait">
               {isLogin ? (
@@ -355,15 +360,15 @@ function Login() {
                   transition={{ duration: 0.4 }}
                   className="z-10 flex flex-col items-center"
                 >
-                  <h2 className="text-4xl font-bold mb-6">Welcome to Vaulta</h2>
-                  <p className="text-indigo-100 text-lg max-w-md mb-10">
+                  <h2 className="text-4xl font-bold mb-6 text-white">Welcome to Vaulta</h2>
+                  <p className="text-slate-300 text-lg max-w-md mb-10">
                     Your secure digital locker system. Store, manage, and access your assets with enterprise-grade security.
                   </p>
-                  <p className="text-sm text-indigo-200 mb-4">Don't have an account?</p>
+                  <p className="text-sm text-slate-400 mb-4">Don't have an account?</p>
                   <button 
                     type="button"
                     onClick={() => toggleMode(false)}
-                    className="px-8 py-2 rounded-full border-2 border-white/30 hover:bg-white hover:text-indigo-600 transition-colors duration-300 font-medium"
+                    className="px-8 py-2 rounded-full border border-slate-700 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 font-medium"
                   >
                     Sign Up
                   </button>
@@ -377,15 +382,15 @@ function Login() {
                   transition={{ duration: 0.4 }}
                   className="z-10 flex flex-col items-center"
                 >
-                  <h2 className="text-4xl font-bold mb-6">Hello, Friend!</h2>
-                  <p className="text-indigo-100 text-lg max-w-md mb-10">
+                  <h2 className="text-4xl font-bold mb-6 text-white">Hello, Friend!</h2>
+                  <p className="text-slate-300 text-lg max-w-md mb-10">
                     Enter your personal details and start your journey with Vaulta today.
                   </p>
-                  <p className="text-sm text-indigo-200 mb-4">Already have an account?</p>
+                  <p className="text-sm text-slate-400 mb-4">Already have an account?</p>
                   <button 
                     type="button"
                     onClick={() => toggleMode(true)}
-                    className="px-8 py-2 rounded-full border-2 border-white/30 hover:bg-white hover:text-indigo-600 transition-colors duration-300 font-medium"
+                    className="px-8 py-2 rounded-full border border-slate-700 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 font-medium"
                   >
                     Sign In
                   </button>

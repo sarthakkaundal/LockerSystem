@@ -5,6 +5,7 @@ import Sidebar from "./components/Navbar";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Lockers from "./pages/Lockers";
 import Reserve from "./pages/Reserve";
@@ -34,7 +35,7 @@ function AppContent() {
   };
   
   return (
-    <div className="flex min-h-screen w-full bg-slate-50">
+    <div className={`flex min-h-screen w-full ${location.pathname === '/' ? 'bg-slate-950' : 'bg-slate-50'}`}>
       <Toaster position="top-right" />
       {isAuthenticated && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
       <div className="flex-1 flex flex-col min-w-0">
@@ -72,7 +73,8 @@ function AppContent() {
               className="min-h-full"
             >
               <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/lockers" element={<ProtectedRoute><Lockers /></ProtectedRoute>} />
                 <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
