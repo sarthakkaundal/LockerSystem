@@ -14,6 +14,7 @@ import History from "./pages/History";
 import Admin from "./pages/Admin";
 
 import { useAuth } from "./context/AuthContext";
+import VaultaLogo from "./components/VaultaLogo";
 
 import { useState } from "react";
 
@@ -24,38 +25,71 @@ function AppContent() {
   
   const getPageHeading = () => {
     switch (location.pathname) {
-      case "/dashboard": return "System Dashboard";
+      case "/dashboard": return "Dashboard";
       case "/lockers": return "Locker Allocation";
       case "/reserve": return "Resource Assignment";
-      case "/my-locker": return "Active Assignment";
+      case "/my-locker": return "My Locker";
       case "/history": return "Booking History";
-      case "/admin": return "System Administration";
-      default: return "System Dashboard";
+      case "/admin": return "Administration";
+      default: return "Dashboard";
+    }
+  };
+
+  const getPageSubheading = () => {
+    switch (location.pathname) {
+      case "/dashboard": return "Real-time overview of system capacity and activity";
+      case "/lockers": return "Browse, filter, and assign available lockers";
+      case "/reserve": return "Configure and confirm a new locker assignment";
+      case "/my-locker": return "View your active locker and access credentials";
+      case "/history": return "Review your past bookings and transactions";
+      case "/admin": return "Manage lockers, users, and system settings";
+      default: return "";
     }
   };
   
   return (
-    <div className={`flex min-h-screen w-full ${location.pathname === '/' ? 'bg-slate-950' : 'bg-slate-50'}`}>
-      <Toaster position="top-right" />
+    <div className={`flex min-h-screen w-full ${location.pathname === '/' ? 'bg-white' : 'bg-gray-50'}`}>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: '#fff',
+            color: '#1e293b',
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px',
+            fontSize: '14px',
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px -2px rgba(0,0,0,.05)',
+          },
+          success: {
+            iconTheme: { primary: '#f97316', secondary: '#fff' },
+          },
+        }}
+      />
       {isAuthenticated && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
       <div className="flex-1 flex flex-col min-w-0">
         {isAuthenticated && (
-          <header className="flex justify-between items-center px-4 sm:px-6 h-16 bg-white sticky top-0 z-30 shadow-sm border-b border-slate-100">
-            <div className="flex items-center gap-3">
+          <header className="flex justify-between items-center px-4 sm:px-8 h-16 bg-white sticky top-0 z-30 border-b border-gray-200">
+            <div className="flex items-center gap-4">
               <button 
                 onClick={() => setIsSidebarOpen(true)}
-                className="lg:hidden text-slate-500 hover:text-slate-700"
+                className="lg:hidden text-gray-500 hover:text-orange-600 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
               </button>
-              <div className="text-base sm:text-lg lg:text-xl font-semibold text-slate-800">{getPageHeading()}</div>
+              <div>
+                <h1 className="text-base sm:text-lg font-semibold text-gray-900 leading-tight">{getPageHeading()}</h1>
+                <p className="text-xs text-gray-500 hidden sm:block">{getPageSubheading()}</p>
+              </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <span className="hidden sm:inline-block text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">{user?.email}</span>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="font-medium truncate max-w-[180px]">{user?.name || user?.email}</span>
+              </div>
               <button
                 type="button"
                 onClick={logout}
-                className="bg-emerald-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
+                className="text-sm font-medium text-gray-600 hover:text-orange-600 border border-gray-200 px-3 py-1.5 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all"
               >
                 Log out
               </button>
@@ -66,10 +100,10 @@ function AppContent() {
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="min-h-full"
             >
               <Routes location={location} key={location.pathname}>

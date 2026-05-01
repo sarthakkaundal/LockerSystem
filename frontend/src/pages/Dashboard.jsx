@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../api/client";
 import { motion } from "framer-motion";
+import { Box, CheckCircle, Clock } from "lucide-react";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -31,11 +32,35 @@ export default function Dashboard() {
     return () => clearInterval(t);
   }, [load]);
 
+  const statCards = [
+    {
+      label: "Total Capacity",
+      value: stats?.total,
+      icon: Box,
+      color: "text-orange-600",
+      bg: "bg-orange-50",
+    },
+    {
+      label: "Available",
+      value: stats?.available,
+      icon: CheckCircle,
+      color: "text-green-600",
+      bg: "bg-green-50",
+    },
+    {
+      label: "Active Assignments",
+      value: stats?.occupied,
+      icon: Clock,
+      color: "text-amber-600",
+      bg: "bg-amber-50",
+    },
+  ];
+
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-4 sm:space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">
+        <div className="bg-red-50 text-red-700 p-4 rounded-lg border border-red-200 text-sm font-medium">
           {error}
         </div>
       )}
@@ -44,103 +69,77 @@ export default function Dashboard() {
       <motion.div 
         variants={{
           hidden: { opacity: 0 },
-          show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          show: { opacity: 1, transition: { staggerChildren: 0.08 } }
         }}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-4"
       >
-        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 hover:-translate-y-1 cursor-default">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Capacity</h3>
-            <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+        {statCards.map((card) => (
+          <motion.div
+            key={card.label}
+            variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
+            className="bg-white rounded-lg border border-gray-200 p-5 flex items-start justify-between"
+          >
+            <div>
+              <p className="text-sm font-medium text-gray-500 mb-1">{card.label}</p>
+              <p className="text-3xl font-bold text-gray-900">{loading ? "—" : card.value ?? "—"}</p>
             </div>
-          </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">{loading ? "-" : stats?.total ?? "-"}</p>
-        </motion.div>
-
-        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 hover:-translate-y-1 cursor-default">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Available Units</h3>
-            <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div className={`${card.bg} ${card.color} p-2.5 rounded-lg`}>
+              <card.icon className="w-5 h-5" />
             </div>
-          </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">{loading ? "-" : stats?.available ?? "-"}</p>
-        </motion.div>
-
-        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 hover:-translate-y-1 cursor-default">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Active Assignments</h3>
-            <div className="bg-amber-100 text-amber-600 p-2 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-          </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900">{loading ? "-" : stats?.occupied ?? "-"}</p>
-        </motion.div>
+          </motion.div>
+        ))}
       </motion.div>
 
-      {/* Activity Log Card */}
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden hover:-translate-y-1">
-        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-200">
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-slate-800">Recent Audit Log</h2>
+      {/* Activity Log */}
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-gray-900">Recent Activity</h2>
+          <span className="text-xs text-gray-400 font-medium">{activity.length} entries</span>
         </div>
         
         {loading && activity.length === 0 ? (
-          <div className="p-6">
-            <div className="animate-pulse h-12 bg-slate-100 rounded mb-2"></div>
-            <div className="animate-pulse h-12 bg-slate-100 rounded mb-2"></div>
-            <div className="animate-pulse h-12 bg-slate-100 rounded"></div>
+          <div className="p-6 space-y-3">
+            {[1,2,3].map(i => <div key={i} className="animate-pulse h-10 bg-gray-100 rounded" />)}
           </div>
         ) : activity.length === 0 ? (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center p-12 text-center"
-          >
-            <div className="bg-slate-100 rounded-full p-4 mb-4">
-              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
+              <Clock className="w-5 h-5 text-gray-400" />
             </div>
-            <p className="text-sm font-medium text-slate-500 mb-2">No records found.</p>
-          </motion.div>
+            <p className="text-sm font-medium text-gray-500">No activity recorded yet</p>
+            <p className="text-xs text-gray-400 mt-1">Locker actions will appear here</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="px-6 py-4 text-sm font-medium text-slate-600">Action Type</th>
-                  <th className="px-6 py-4 text-sm font-medium text-slate-600">Resource ID</th>
-                  <th className="px-6 py-4 text-sm font-medium text-slate-600">Description</th>
-                  <th className="px-6 py-4 text-sm font-medium text-slate-600">Timestamp</th>
+                <tr className="border-b border-gray-100 bg-gray-50/50">
+                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Resource</th>
+                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Details</th>
+                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
                 </tr>
               </thead>
-              <motion.tbody 
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: { opacity: 1, transition: { staggerChildren: 0.05 } }
-                }}
-                initial="hidden"
-                animate="show"
-                className="divide-y divide-slate-100"
-              >
+              <tbody className="divide-y divide-gray-50">
                 {activity.map((item) => (
-                  <motion.tr variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} key={item.id} className="even:bg-slate-50 hover:bg-slate-100 transition-colors duration-150">
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${
-                        item.action === 'BOOKED' ? 'bg-yellow-100 text-yellow-700' : 
-                        item.action === 'RELEASED' ? 'bg-emerald-100 text-emerald-700' : 
-                        'bg-green-100 text-green-700'
+                  <tr key={item.id} className="hover:bg-orange-50/40 transition-colors">
+                    <td className="px-5 py-3">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
+                        item.action === 'BOOKED' ? 'bg-amber-100 text-amber-800' : 
+                        item.action === 'RELEASED' ? 'bg-gray-100 text-gray-700' : 
+                        'bg-green-100 text-green-800'
                       }`}>
                         {item.action}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-900">{item.locker}</td>
-                    <td className="px-6 py-4 text-sm text-slate-600">{item.details}</td>
-                    <td className="px-6 py-4 text-sm text-slate-500">{new Date(item.at).toLocaleString()}</td>
-                  </motion.tr>
+                    <td className="px-5 py-3 text-sm font-semibold text-gray-900">{item.locker}</td>
+                    <td className="px-5 py-3 text-sm text-gray-600">{item.details}</td>
+                    <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(item.at).toLocaleString()}</td>
+                  </tr>
                 ))}
-              </motion.tbody>
+              </tbody>
             </table>
           </div>
         )}

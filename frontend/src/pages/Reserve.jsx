@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { api } from "../api/client";
+import { ChevronDown } from "lucide-react";
 
 const durations = [
   { value: "1", label: "1 hour" },
@@ -99,45 +100,44 @@ function Reserve() {
   };
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full space-y-6">
-
-
+    <div className="p-4 sm:p-6 lg:p-8">
       {error ? (
-        <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">
+        <div className="bg-red-50 text-red-700 p-4 rounded-lg border border-red-200 text-sm font-medium mb-6">
           {error}
         </div>
       ) : null}
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-xl mx-auto">
         <motion.form 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleSubmit} 
-          className="bg-white rounded-xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
+          className="bg-white rounded-lg border border-gray-200"
         >
-          <div className="px-6 py-5 border-b border-slate-200 bg-white rounded-t-xl">
-            <h2 className="text-lg font-semibold text-slate-800">Assignment Configuration</h2>
+          <div className="px-6 py-4 border-b border-gray-100">
+            <h2 className="text-base font-semibold text-gray-900">Assignment Configuration</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Select a locker and configure your booking</p>
           </div>
-          <div className="p-6 sm:p-8">
+          <div className="p-6 space-y-5">
             {submitError ? (
-              <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 border border-red-100 text-sm">
+              <div className="bg-red-50 text-red-700 p-3 rounded-lg border border-red-200 text-sm font-medium">
                 {submitError}
               </div>
             ) : null}
 
-            <div className="mb-6">
-              <label htmlFor="locker" className="block text-sm font-medium text-slate-600 mb-2">
+            <div>
+              <label htmlFor="locker" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Select Resource
               </label>
               {loading ? (
-                <div className="animate-pulse h-10 bg-slate-100 rounded-lg"></div>
+                <div className="animate-pulse h-10 bg-gray-100 rounded-lg"></div>
               ) : (
                 <div className="relative">
                   <select
                     id="locker"
                     value={selectedId}
                     onChange={(e) => setSelectedId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none pr-10"
                   >
                     {available.length === 0 ? (
                       <option value="">No resources available</option>
@@ -149,9 +149,7 @@ function Reserve() {
                       ))
                     )}
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </div>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 </div>
               )}
               {paramId && fromParam && fromParam.status !== "Available" ? (
@@ -162,14 +160,14 @@ function Reserve() {
             </div>
 
             {selected ? (
-              <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-4 mb-6 flex justify-between items-center">
-                <span className="font-semibold text-emerald-900">{selected.id}</span>
-                <span className="text-sm font-medium text-emerald-700">{selected.location}</span>
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 flex justify-between items-center">
+                <span className="font-semibold text-orange-800 text-sm">{selected.id}</span>
+                <span className="text-xs font-medium text-orange-600">{selected.location}</span>
               </div>
             ) : null}
 
-            <div className="mb-6">
-              <label htmlFor="duration" className="block text-sm font-medium text-slate-600 mb-2">
+            <div>
+              <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Duration
               </label>
               <div className="relative">
@@ -177,7 +175,7 @@ function Reserve() {
                   id="duration"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none pr-10"
                 >
                   {durations.map((d) => (
                     <option key={d.value} value={d.value}>
@@ -185,18 +183,16 @@ function Reserve() {
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                </div>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               </div>
             </div>
 
-            <div className="mb-8">
-              <div className="flex justify-between items-end mb-2">
-                <label htmlFor="note" className="block text-sm font-medium text-slate-600">
+            <div>
+              <div className="flex justify-between items-end mb-1.5">
+                <label htmlFor="note" className="block text-sm font-medium text-gray-700">
                   Reference Note
                 </label>
-                <span className="text-xs text-slate-400">{note.length}/500</span>
+                <span className="text-xs text-gray-400">{note.length}/500</span>
               </div>
               <textarea
                 id="note"
@@ -205,23 +201,22 @@ function Reserve() {
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={500}
                 placeholder="Optional notes for this assignment..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow resize-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none placeholder:text-gray-400"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100 items-center justify-between">
-              <Link to="/lockers" className="w-full sm:w-auto px-6 py-2.5 border border-slate-200 text-slate-600 font-medium rounded-lg hover:bg-slate-50 transition-all duration-200 text-center shadow-sm hover:shadow-md block">
-                <motion.span whileTap={{ scale: 0.95 }} className="block w-full h-full">Cancel</motion.span>
+            <div className="flex flex-col sm:flex-row gap-3 pt-5 border-t border-gray-100">
+              <Link to="/lockers" className="flex-1 text-center px-5 py-2.5 border border-gray-200 text-gray-600 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                Cancel
               </Link>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
+              <button
                 type="submit"
                 disabled={submitting || loading || !selected || selected.status !== "Available"}
-                className="w-full sm:w-auto bg-emerald-600 text-white px-6 py-2.5 rounded-lg hover:bg-emerald-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                className="flex-1 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
               >
                 {submitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : null}
                 {submitting ? "Processing..." : "Confirm Assignment"}
-              </motion.button>
+              </button>
             </div>
           </div>
         </motion.form>
