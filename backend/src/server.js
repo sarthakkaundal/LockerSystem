@@ -318,47 +318,61 @@ app.post("/api/bookings", authMiddleware(true), validateBody(bookingSchema), asy
   const otpCode = generateOtp();
   const accessToken = generateAccessToken();
 
-  const booking = await prisma.$transaction(async (tx) => {
-    const b = await tx.booking.create({
-      data: {
-        userId,
-        lockerId: locker.id,
-        startsAt,
-        endsAt,
-        otpCode,
-        accessToken,
-        note: note || undefined,
-      },
-    });
-    await tx.locker.update({
-      where: { id: locker.id },
-      data: { status: LockerStatus.OCCUPIED },
-    });
-    await tx.bookingLog.create({
-      data: {
-        bookingId: b.id,
-        lockerCode: locker.code,
-        actorEmail: user?.email ?? null,
-        action: "BOOKED",
-        details: `Reserved for ${durationHours}h`,
-      },
-    });
-    return b;
-  });
+  try {
+    const booking = await prisma.$transaction(async (tx) => {
+      const lockerTx = await tx.locker.findUnique({ where: { code: lockerCode } });
+      if (!lockerTx || lockerTx.status !== LockerStatus.AVAILABLE) {
+        throw new Error("Locker is no longer available.");
+      }
 
-  res.status(201).json({
-    booking: {
-      id: booking.id,
-      lockerCode: locker.code,
-      location: locker.location,
-      startsAt: booking.startsAt.toISOString(),
-      endsAt: booking.endsAt.toISOString(),
-      durationHours,
-      otpCode: booking.otpCode,
-      qrPayload: `${booking.id}:${booking.accessToken}`,
-      note: booking.note,
-    },
-  });
+      const b = await tx.booking.create({
+        data: {
+          userId,
+          lockerId: lockerTx.id,
+          startsAt,
+          endsAt,
+          otpCode,
+          accessToken,
+          note: note || undefined,
+        },
+      });
+      await tx.locker.update({
+        where: { id: lockerTx.id },
+        data: { status: LockerStatus.OCCUPIED },
+      });
+      await tx.bookingLog.create({
+        data: {
+          bookingId: b.id,
+          lockerCode: lockerTx.code,
+          actorEmail: user?.email ?? null,
+          action: "BOOKED",
+          details: `Reserved for ${durationHours}h`,
+        },
+      });
+      return b;
+    });
+
+    res.status(201).json({
+      booking: {
+        id: booking.id,
+        lockerCode: lockerCode,
+        location: locker.location, // Note: locker is queried outside just for location, which is fine, but we can rely on lockerTx
+        startsAt: booking.startsAt.toISOString(),
+        endsAt: booking.endsAt.toISOString(),
+        durationHours,
+        otpCode: booking.otpCode,
+        qrPayload: `${booking.id}:${booking.accessToken}`,
+        note: booking.note,
+      },
+    });
+  } catch (err) {
+    if (err.message === "Locker is no longer available.") {
+      return res.status(400).json({ error: "That locker is no longer available. Please choose another." });
+    }
+    throw err;
+  }
+
+
 });
 
 app.post("/api/bookings/:id/release", authMiddleware(true), async (req, res) => {

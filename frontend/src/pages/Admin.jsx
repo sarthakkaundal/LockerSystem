@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, apiText } from "../api/client";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
 export default function Admin() {
   const [overview, setOverview] = useState(null);
@@ -125,7 +127,12 @@ export default function Admin() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-6 sm:space-y-8">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="p-4 sm:p-6 lg:p-8 bg-slate-50 min-h-full space-y-6 sm:space-y-8"
+    >
 
       {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{error}</div>}
       {formError && <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-sm border border-red-100">{formError}</div>}
@@ -178,7 +185,7 @@ export default function Admin() {
                       <div 
                         key={l.code}
                         onClick={() => setLockerCodeInput(l.code)}
-                        className={`w-12 h-12 rounded-lg flex items-center justify-center text-sm font-bold cursor-pointer border transition-all hover:scale-105 active:scale-95 ${bgColor}`}
+                        className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center text-sm sm:text-base font-bold cursor-pointer border transition-all hover:scale-105 active:scale-95 ${bgColor}`}
                         title={`${l.code} - ${l.status}`}
                       >
                          {l.code}
@@ -208,13 +215,17 @@ export default function Admin() {
             </div>
             
             <div className="flex gap-3 mb-6">
-               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={() => toggleMaintenanceMode(true)} disabled={busy || loading}>Maint ON</button>
-               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={() => toggleMaintenanceMode(false)} disabled={busy || loading}>Maint OFF</button>
+               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50 flex items-center justify-center gap-2" onClick={() => toggleMaintenanceMode(true)} disabled={busy || loading}>
+                 {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Maint ON
+               </button>
+               <button className="flex-1 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg hover:bg-slate-50 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50 flex items-center justify-center gap-2" onClick={() => toggleMaintenanceMode(false)} disabled={busy || loading}>
+                 {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Maint OFF
+               </button>
             </div>
             
             <div className="mt-auto">
-              <button className="w-full bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50" onClick={forceRelease} disabled={busy || loading}>
-                 Force Release
+              <button className="w-full bg-red-600 text-white px-4 py-2.5 rounded-lg hover:bg-red-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md disabled:opacity-50 flex items-center justify-center gap-2" onClick={forceRelease} disabled={busy || loading}>
+                 {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null} Force Release
               </button>
             </div>
           </div>
@@ -292,6 +303,6 @@ export default function Admin() {
         </div>
       </div>
       
-    </div>
+    </motion.div>
   );
 }

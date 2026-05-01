@@ -14,7 +14,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
   const linkClass = ({ isActive }) => 
     `flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start gap-4 pl-8 lg:pl-16 pr-4'} py-3 text-base font-bold rounded-lg transition-all duration-200 hover:translate-x-1 hover:bg-slate-800 hover:text-white w-full ${
       isActive 
-        ? "relative bg-slate-800 text-white before:absolute before:left-0 before:top-1 before:bottom-1 before:w-1 before:rounded-r before:bg-indigo-500" 
+        ? "relative bg-slate-800/80 text-white before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1.5 before:rounded-r-md before:bg-gradient-to-b before:from-indigo-500 before:to-purple-500 shadow-sm" 
         : "text-slate-400"
     }`;
 

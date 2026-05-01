@@ -64,11 +64,19 @@ export async function api(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-    body: isJson ? JSON.stringify(body) : body,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+      body: isJson ? JSON.stringify(body) : body,
+    });
+  } catch (error) {
+    if (error.name === 'TypeError') {
+      throw new Error("Server is unreachable. Please check your internet connection or try again later.");
+    }
+    throw error;
+  }
 
   const text = await res.text();
   let data = null;
@@ -80,7 +88,7 @@ export async function api(path, options = {}) {
 
   if (!res.ok) {
     handleUnauthorizedIfNeeded(path, res.status, Boolean(token));
-    const err = new Error(data?.error || res.statusText || "Request failed");
+    const err = new Error(data?.error || (res.status === 502 ? "Server is offline. Please try again later." : res.statusText || "Request failed"));
     err.status = res.status;
     err.body = data;
     throw err;

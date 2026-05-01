@@ -42,9 +42,14 @@ export default function MyLocker() {
 
   useEffect(() => {
     if (!booking) return undefined;
-    const id = setInterval(() => setNowTick(Date.now()), 1000);
+    const id = setInterval(() => {
+      setNowTick(Date.now());
+      if (new Date(booking.endsAt).getTime() <= Date.now()) {
+        load();
+      }
+    }, 1000);
     return () => clearInterval(id);
-  }, [booking]);
+  }, [booking, load]);
 
   const handleRelease = async () => {
     if (!booking) return;
