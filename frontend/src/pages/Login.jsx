@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, LockKeyhole } from "lucide-react";
+import toast from "react-hot-toast";
 import vaultaLogo from "../assets/logos/vaulta_logo.png";
 
 function Login() {
@@ -70,7 +71,7 @@ function Login() {
     try {
       await register(regName.trim(), regEmail.trim(), regPassword);
       setError("");
-      alert("Registration successful! Please sign in with your new credentials.");
+      toast.success("Registration successful! Please sign in with your new credentials.");
       setIsLogin(true);
       setEmail(regEmail);
       setPassword(regPassword);

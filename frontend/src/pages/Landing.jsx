@@ -125,9 +125,6 @@ const Landing = () => {
               <Link to="/login" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-tech font-semibold text-lg hover:shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
                 Get Started <ArrowRight size={18} />
               </Link>
-              <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 text-white font-tech font-semibold text-lg border border-white/10 hover:bg-white/10 transition-all duration-300">
-                View Demo
-              </button>
             </motion.div>
           </motion.div>
         </section>
