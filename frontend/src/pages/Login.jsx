@@ -120,7 +120,7 @@ function Login() {
                 type="button"
                 onClick={() => toggleMode(true)}
                 className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  isLogin ? "text-indigo-600" : "text-slate-500 hover:text-slate-700"
+                  isLogin ? "text-emerald-600" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 Login
@@ -129,7 +129,7 @@ function Login() {
                 type="button"
                 onClick={() => toggleMode(false)}
                 className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  !isLogin ? "text-indigo-600" : "text-slate-500 hover:text-slate-700"
+                  !isLogin ? "text-emerald-600" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 Register
@@ -169,7 +169,7 @@ function Login() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                           disabled={submitting}
                           placeholder="you@example.com"
                         />
@@ -185,7 +185,7 @@ function Login() {
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                             disabled={submitting}
                             placeholder="••••••••"
                           />
@@ -203,7 +203,7 @@ function Login() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
+                        className="w-full mt-2 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
                       >
                         {submitting ? (
                           <>
@@ -250,7 +250,7 @@ function Login() {
                           type="text"
                           value={regName}
                           onChange={(e) => setRegName(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                           disabled={submitting}
                           placeholder="John Doe"
                         />
@@ -265,7 +265,7 @@ function Login() {
                           type="email"
                           value={regEmail}
                           onChange={(e) => setRegEmail(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                           disabled={submitting}
                           placeholder="you@example.com"
                         />
@@ -281,7 +281,7 @@ function Login() {
                             type={showRegPassword ? "text" : "password"}
                             value={regPassword}
                             onChange={(e) => setRegPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                             disabled={submitting}
                             placeholder="••••••••"
                           />
@@ -306,7 +306,7 @@ function Login() {
                             type={showRegPassword ? "text" : "password"}
                             value={regConfirmPassword}
                             onChange={(e) => setRegConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow text-slate-900"
+                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow text-slate-900"
                             disabled={submitting}
                             placeholder="••••••••"
                           />
@@ -316,7 +316,7 @@ function Login() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
+                        className="w-full mt-4 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
                       >
                         {submitting ? (
                           <>

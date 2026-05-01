@@ -53,7 +53,7 @@ export default function Dashboard() {
         <motion.div variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 hover:-translate-y-1 cursor-default">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Capacity</h3>
-            <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+            <div className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function Dashboard() {
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium ${
                         item.action === 'BOOKED' ? 'bg-yellow-100 text-yellow-700' : 
-                        item.action === 'RELEASED' ? 'bg-indigo-100 text-indigo-700' : 
+                        item.action === 'RELEASED' ? 'bg-emerald-100 text-emerald-700' : 
                         'bg-green-100 text-green-700'
                       }`}>
                         {item.action}

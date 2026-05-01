@@ -137,7 +137,7 @@ function Reserve() {
                     id="locker"
                     value={selectedId}
                     onChange={(e) => setSelectedId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none pr-10"
                   >
                     {available.length === 0 ? (
                       <option value="">No resources available</option>
@@ -162,9 +162,9 @@ function Reserve() {
             </div>
 
             {selected ? (
-              <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 mb-6 flex justify-between items-center">
-                <span className="font-semibold text-indigo-900">{selected.id}</span>
-                <span className="text-sm font-medium text-indigo-700">{selected.location}</span>
+              <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-4 mb-6 flex justify-between items-center">
+                <span className="font-semibold text-emerald-900">{selected.id}</span>
+                <span className="text-sm font-medium text-emerald-700">{selected.location}</span>
               </div>
             ) : null}
 
@@ -177,7 +177,7 @@ function Reserve() {
                   id="duration"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none pr-10"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none pr-10"
                 >
                   {durations.map((d) => (
                     <option key={d.value} value={d.value}>
@@ -205,7 +205,7 @@ function Reserve() {
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={500}
                 placeholder="Optional notes for this assignment..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow resize-none"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow resize-none"
               />
             </div>
 
@@ -217,7 +217,7 @@ function Reserve() {
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={submitting || loading || !selected || selected.status !== "Available"}
-                className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                className="w-full sm:w-auto bg-emerald-600 text-white px-6 py-2.5 rounded-lg hover:bg-emerald-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
               >
                 {submitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : null}
                 {submitting ? "Processing..." : "Confirm Assignment"}

@@ -55,7 +55,7 @@ function AppContent() {
               <button
                 type="button"
                 onClick={logout}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
+                className="bg-emerald-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
               >
                 Log out
               </button>

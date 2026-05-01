@@ -70,12 +70,12 @@ function Lockers() {
             placeholder="Search resources..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-64 sm:flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
+            className="w-full sm:w-64 sm:flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow"
          />
          <select
             value={locationFilter}
             onChange={(e) => setLocationFilter(e.target.value)}
-            className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none"
+            className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none"
          >
             <option value="all">All Locations</option>
             {allLocations.map((loc) => (
@@ -85,7 +85,7 @@ function Lockers() {
          <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow appearance-none"
+            className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow appearance-none"
          >
             <option value="all">All Statuses</option>
             <option value="Available">Available</option>
@@ -148,11 +148,11 @@ function Lockers() {
                    }}
                    whileHover={{ y: -4 }}
                    key={locker.id} 
-                   className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 flex flex-col focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 cursor-pointer overflow-hidden relative"
+                   className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 flex flex-col focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500 cursor-pointer overflow-hidden relative"
                    onClick={() => isAvail && navigate(`/reserve?locker=${encodeURIComponent(locker.id)}`)}
                  >
                    {/* Background Highlight for available items on hover */}
-                   {isAvail && <div className="absolute inset-0 bg-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />}
+                   {isAvail && <div className="absolute inset-0 bg-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />}
                    
                    <div className="flex justify-between items-start mb-2 relative z-10">
                       <span className="text-lg sm:text-xl font-bold text-slate-800">{locker.id}</span>
@@ -183,7 +183,7 @@ function Lockers() {
                      disabled={!isAvail}
                      className={`relative z-10 w-full py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
                        isAvail 
-                         ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-sm hover:shadow-md" 
+                         ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm hover:shadow-md" 
                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
                      }`}
                    >

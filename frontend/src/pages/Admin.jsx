@@ -207,7 +207,7 @@ export default function Admin() {
                <label className="block text-sm font-medium text-slate-600 mb-2">Resource ID</label>
                <input 
                  type="text" 
-                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow" 
+                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow" 
                  value={lockerCodeInput} 
                  onChange={e => setLockerCodeInput(e.target.value)} 
                  placeholder="e.g. A1"
@@ -239,7 +239,7 @@ export default function Admin() {
            <div className="flex gap-3 items-center w-full sm:w-auto">
              <input 
                type="text" 
-               className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow" 
+               className="w-full sm:w-48 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow" 
                placeholder="Filter records..."
                value={logSearch}
                onChange={e => setLogSearch(e.target.value)}

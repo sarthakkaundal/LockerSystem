@@ -144,7 +144,7 @@ export default function MyLocker() {
             </div>
             <h3 className="text-lg font-medium text-slate-900 mb-2">No Active Assignment</h3>
             <p className="text-slate-500 mb-6">You don't have any locker assigned to you right now.</p>
-            <Link to="/reserve" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md w-full sm:w-auto">
+            <Link to="/reserve" className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg hover:bg-emerald-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md w-full sm:w-auto">
               Find a Resource
             </Link>
           </motion.div>

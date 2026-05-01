@@ -36,9 +36,9 @@ const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => (
     variants={fadeInUp}
     className="relative group p-8 rounded-3xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] transition-colors duration-300"
   >
-    <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="absolute inset-0 rounded-3xl bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     <div className="relative z-10">
-      <div className="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400 group-hover:scale-110 transition-transform duration-300">
+      <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 transition-transform duration-300">
         <Icon size={28} strokeWidth={1.5} />
       </div>
       <h3 className="text-xl font-heading font-semibold text-white mb-3">{title}</h3>
@@ -61,12 +61,12 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-300 font-sans overflow-hidden selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-slate-950 text-slate-300 font-sans overflow-hidden selection:bg-emerald-500/30">
       {/* Abstract Background Elements */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/20 blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-purple-900/20 blur-[150px]" />
-        <div className="absolute top-[40%] right-[10%] w-[30%] h-[30%] rounded-full bg-indigo-800/10 blur-[100px]" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/20 blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-900/20 blur-[150px]" />
+        <div className="absolute top-[40%] right-[10%] w-[30%] h-[30%] rounded-full bg-emerald-800/10 blur-[100px]" />
       </div>
 
       {/* Navbar */}
@@ -100,8 +100,8 @@ const Landing = () => {
             className="flex flex-col items-center"
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
-              <span className="flex h-2 w-2 rounded-full bg-indigo-500"></span>
-              <span className="text-xs font-tech font-medium tracking-wide text-indigo-300">VAULTA OS 2.0 IS LIVE</span>
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              <span className="text-xs font-tech font-medium tracking-wide text-emerald-300">VAULTA OS 2.0 IS LIVE</span>
             </motion.div>
             
             <motion.h1 
@@ -109,7 +109,7 @@ const Landing = () => {
               className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[1.1] mb-8 max-w-5xl"
             >
               Smart Locker <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient-x">
+              <span className="text-emerald-400 ">
                 Management, Reinvented
               </span>
             </motion.h1>
@@ -122,7 +122,7 @@ const Landing = () => {
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link to="/login" className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-tech font-semibold text-lg hover:shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
+              <Link to="/login" className="w-full sm:w-auto px-8 py-4 rounded-full bg-emerald-600 text-white font-tech font-semibold text-lg hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
                 Get Started <ArrowRight size={18} />
               </Link>
             </motion.div>
@@ -193,7 +193,7 @@ const Landing = () => {
                       "Instant maintenance flagging"
                     ].map((item, i) => (
                       <li key={i} className="flex items-center gap-3 text-slate-300 font-tech">
-                        <div className="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
                           <CheckCircle2 size={14} />
                         </div>
                         {item}
@@ -210,7 +210,7 @@ const Landing = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="relative p-2 rounded-[2rem] bg-gradient-to-br from-indigo-500/20 to-purple-500/5 border border-white/10 backdrop-blur-sm"
+                  className="relative p-2 rounded-[2rem] bg-emerald-500 border border-white/10 backdrop-blur-sm"
                 >
                   <div className="bg-slate-900 rounded-[1.75rem] border border-white/5 overflow-hidden shadow-2xl">
                     {/* Fake Browser Header */}
@@ -230,12 +230,12 @@ const Landing = () => {
                         <div className="w-32 h-6 bg-white/10 rounded-md"></div>
                         <div className="flex gap-2">
                           <div className="w-8 h-8 rounded-full bg-white/5"></div>
-                          <div className="w-8 h-8 rounded-full bg-indigo-500/20"></div>
+                          <div className="w-8 h-8 rounded-full bg-emerald-500/20"></div>
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-3 mb-6">
                         {[...Array(12)].map((_, i) => (
-                          <div key={i} className={`h-20 rounded-xl border ${i % 3 === 0 ? 'bg-indigo-500/10 border-indigo-500/30' : i % 5 === 0 ? 'bg-purple-500/10 border-purple-500/30' : 'bg-white/5 border-white/10'}`}></div>
+                          <div key={i} className={`h-20 rounded-xl border ${i % 3 === 0 ? 'bg-emerald-500/10 border-emerald-500/30' : i % 5 === 0 ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-white/5 border-white/10'}`}></div>
                         ))}
                       </div>
                       <div className="w-full h-24 bg-white/5 rounded-xl border border-white/10"></div>
@@ -281,7 +281,7 @@ const Landing = () => {
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 mb-6">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6">
                   <Layers size={32} />
                 </div>
                 <h3 className="font-heading text-xl font-semibold text-white mb-3">Reduced Manual Effort</h3>
@@ -292,7 +292,7 @@ const Landing = () => {
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.2 }}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6">
                   <LayoutDashboard size={32} />
                 </div>
                 <h3 className="font-heading text-xl font-semibold text-white mb-3">Transparent Audit Logs</h3>
@@ -304,7 +304,7 @@ const Landing = () => {
 
         {/* CTA / Trust Section */}
         <section className="py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-900/20" />
+          <div className="absolute inset-0 bg-emerald-900" />
           <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}

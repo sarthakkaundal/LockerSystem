@@ -14,7 +14,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
   const linkClass = ({ isActive }) => 
     `flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start gap-4 pl-8 lg:pl-16 pr-4'} py-3 text-base font-bold rounded-lg transition-all duration-200 hover:translate-x-1 hover:bg-slate-800 hover:text-white w-full ${
       isActive 
-        ? "relative bg-slate-800/80 text-white before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1.5 before:rounded-r-md before:bg-gradient-to-b before:from-indigo-500 before:to-purple-500 shadow-sm" 
+        ? "relative bg-slate-800/80 text-white before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1.5 before:rounded-r-md before:bg-emerald-500 shadow-sm" 
         : "text-slate-400"
     }`;
 
@@ -29,7 +29,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
       <aside className={`fixed lg:sticky top-0 left-0 z-50 h-screen ${isCollapsed ? 'lg:w-20' : 'lg:w-84'} w-72 bg-slate-900 border-r border-slate-800 flex flex-col text-slate-400 transform transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <div className="h-24 flex items-center justify-between lg:justify-center px-6 border-b border-slate-800 overflow-hidden relative">
           <img src={logoUrl} alt="Logo" className={`h-24 w-auto object-contain scale-[1.4] transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`} />
-          {isCollapsed && <span className="hidden lg:block text-2xl font-extrabold text-white bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">V</span>}
+          {isCollapsed && <span className="hidden lg:block text-2xl font-extrabold text-white text-emerald-500">V</span>}
           <button onClick={() => setIsOpen(false)} className="lg:hidden text-slate-400 hover:text-white">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
@@ -77,7 +77,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
             className={`p-4 border-t border-slate-800 cursor-pointer ${isCollapsed ? 'flex justify-center' : ''}`}
           >
             <div className={`flex items-center ${isCollapsed ? 'justify-center p-0' : 'gap-3 px-4 py-3'} rounded-lg bg-slate-800/50 hover:bg-slate-700 transition-colors w-full group`}>
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-sm overflow-hidden" title={isCollapsed ? user.email : ""}>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm shadow-sm overflow-hidden" title={isCollapsed ? user.email : ""}>
                 {user?.profilePhoto ? (
                   <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
                 ) : (

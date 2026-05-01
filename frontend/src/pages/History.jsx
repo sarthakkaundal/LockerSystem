@@ -44,7 +44,7 @@ export default function History() {
               placeholder="Search resources or locations..." 
               value={filter}
               onChange={e => setFilter(e.target.value)}
-              className="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-shadow"
+              className="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-shadow"
             />
           )}
         </div>
