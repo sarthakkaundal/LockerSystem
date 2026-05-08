@@ -24,6 +24,7 @@ function Login() {
   const [regPassword, setRegPassword] = useState("");
   const [regConfirmPassword, setRegConfirmPassword] = useState("");
   const [showRegPassword, setShowRegPassword] = useState(false);
+  const [showRegConfirmPassword, setShowRegConfirmPassword] = useState(false);
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -192,7 +193,7 @@ function Login() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
                             disabled={submitting}
                           >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -217,12 +218,6 @@ function Login() {
                           "Sign in"
                         )}
                       </button>
-                      
-                      <div className="pt-4 mt-4 border-t border-slate-100 text-center">
-                        <p className="text-xs text-slate-500">
-                          Demo account: <span className="font-medium text-slate-700">student@university.edu</span> / <span className="font-medium text-slate-700">password123</span>
-                        </p>
-                      </div>
                     </form>
                   </motion.div>
                 ) : (
@@ -288,7 +283,7 @@ function Login() {
                           <button
                             type="button"
                             onClick={() => setShowRegPassword(!showRegPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
                             disabled={submitting}
                           >
                             {showRegPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -303,13 +298,21 @@ function Login() {
                         <div className="relative">
                           <input
                             id="regConfirmPassword"
-                            type={showRegPassword ? "text" : "password"}
+                            type={showRegConfirmPassword ? "text" : "password"}
                             value={regConfirmPassword}
                             onChange={(e) => setRegConfirmPassword(e.target.value)}
                             className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
                             disabled={submitting}
                             placeholder="••••••••"
                           />
+                          <button
+                            type="button"
+                            onClick={() => setShowRegConfirmPassword(!showRegConfirmPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
+                            disabled={submitting}
+                          >
+                            {showRegConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
                         </div>
                       </div>
 
