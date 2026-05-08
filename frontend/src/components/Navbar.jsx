@@ -92,10 +92,10 @@ export default function Navbar({ isOpen, setIsOpen }) {
               )}
             </div>
           </div>
-          <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
         </>
       )}
     </aside>
+    <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </>
   );
 }

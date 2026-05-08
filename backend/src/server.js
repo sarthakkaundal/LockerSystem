@@ -38,8 +38,20 @@ const validateBody = (schema) => (req, res, next) => {
   }
 };
 
+let isRefreshing = false;
+let lastRefresh = 0;
+
 async function refreshStale() {
-  await expireStaleBookings();
+  if (isRefreshing || Date.now() - lastRefresh < 10000) return;
+  isRefreshing = true;
+  try {
+    await expireStaleBookings();
+    lastRefresh = Date.now();
+  } catch (err) {
+    console.error("Failed to refresh stale bookings:", err);
+  } finally {
+    isRefreshing = false;
+  }
 }
 
 // Run expiry cleanup in the background every 1 minute
@@ -710,3 +722,4 @@ app.use((err, _req, res, _next) => {
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
 });
+// Trigger nodemon restart
