@@ -2,8 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "../api/client";
 import { motion } from "framer-motion";
 import { Box, CheckCircle, Clock } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
   const [stats, setStats] = useState(null);
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,18 +16,22 @@ export default function Dashboard() {
     setError("");
     setLoading(true);
     try {
-      const [s, a] = await Promise.all([
-        api("/api/stats"),
-        api("/api/activity?limit=12"),
-      ]);
-      setStats(s);
-      setActivity(a.activity ?? []);
+      const promises = [api("/api/stats")];
+      if (isAdmin) {
+        promises.push(api("/api/activity?limit=12"));
+      }
+
+      const results = await Promise.all(promises);
+      setStats(results[0]);
+      if (isAdmin && results[1]) {
+        setActivity(results[1].activity ?? []);
+      }
     } catch (e) {
       setError(e.message || "Could not load dashboard.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
     load();
@@ -93,57 +100,59 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Activity Log */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-900">Recent Activity</h2>
-          <span className="text-xs text-gray-400 font-medium">{activity.length} entries</span>
-        </div>
-        
-        {loading && activity.length === 0 ? (
-          <div className="p-6 space-y-3">
-            {[1,2,3].map(i => <div key={i} className="animate-pulse h-10 bg-gray-100 rounded" />)}
+      {isAdmin && (
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-gray-900">Recent Activity</h2>
+            <span className="text-xs text-gray-400 font-medium">{activity.length} entries</span>
           </div>
-        ) : activity.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
-              <Clock className="w-5 h-5 text-gray-400" />
+          
+          {loading && activity.length === 0 ? (
+            <div className="p-6 space-y-3">
+              {[1,2,3].map(i => <div key={i} className="animate-pulse h-10 bg-gray-100 rounded" />)}
             </div>
-            <p className="text-sm font-medium text-gray-500">No activity recorded yet</p>
-            <p className="text-xs text-gray-400 mt-1">Locker actions will appear here</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/50">
-                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
-                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Resource</th>
-                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Details</th>
-                  <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {activity.map((item) => (
-                  <tr key={item.id} className="hover:bg-orange-50/40 transition-colors">
-                    <td className="px-5 py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
-                        item.action === 'BOOKED' ? 'bg-amber-100 text-amber-800' : 
-                        item.action === 'RELEASED' ? 'bg-gray-100 text-gray-700' : 
-                        'bg-green-100 text-green-800'
-                      }`}>
-                        {item.action}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3 text-sm font-semibold text-gray-900">{item.locker}</td>
-                    <td className="px-5 py-3 text-sm text-gray-600">{item.details}</td>
-                    <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(item.at).toLocaleString()}</td>
+          ) : activity.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
+                <Clock className="w-5 h-5 text-gray-400" />
+              </div>
+              <p className="text-sm font-medium text-gray-500">No activity recorded yet</p>
+              <p className="text-xs text-gray-400 mt-1">Locker actions will appear here</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-gray-50/50">
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Resource</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Details</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {activity.map((item) => (
+                    <tr key={item.id} className="hover:bg-orange-50/40 transition-colors">
+                      <td className="px-5 py-3">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
+                          item.action === 'BOOKED' ? 'bg-amber-100 text-amber-800' : 
+                          item.action === 'RELEASED' ? 'bg-gray-100 text-gray-700' : 
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          {item.action}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-sm font-semibold text-gray-900">{item.locker}</td>
+                      <td className="px-5 py-3 text-sm text-gray-600">{item.details}</td>
+                      <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(item.at).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

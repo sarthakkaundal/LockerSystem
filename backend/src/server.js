@@ -231,7 +231,7 @@ app.get("/api/stats", async (_req, res) => {
   res.json({ total, available, occupied, maintenance });
 });
 
-app.get("/api/activity", async (req, res) => {
+app.get("/api/activity", authMiddleware(true), requireAdmin, async (req, res) => {
   await refreshStale();
   const limit = Math.min(Number(req.query.limit) || 12, 50);
   const logs = await prisma.bookingLog.findMany({
