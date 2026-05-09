@@ -10,7 +10,6 @@ import Dashboard from "./pages/Dashboard";
 import Lockers from "./pages/Lockers";
 import Reserve from "./pages/Reserve";
 import MyLocker from "./pages/MyLocker";
-import History from "./pages/History";
 import Admin from "./pages/Admin";
 
 import { useAuth } from "./context/AuthContext";
@@ -29,7 +28,6 @@ function AppContent() {
       case "/lockers": return "Locker Allocation";
       case "/reserve": return "Resource Assignment";
       case "/my-locker": return "My Locker";
-      case "/history": return "Booking History";
       case "/admin": return "Administration";
       default: return "Dashboard";
     }
@@ -41,7 +39,6 @@ function AppContent() {
       case "/lockers": return "Browse, filter, and assign available lockers";
       case "/reserve": return "Configure and confirm a new locker assignment";
       case "/my-locker": return "View your active locker and access credentials";
-      case "/history": return "Review your past bookings and transactions";
       case "/admin": return "Manage lockers, users, and system settings";
       default: return "";
     }
@@ -113,7 +110,6 @@ function AppContent() {
                 <Route path="/lockers" element={<ProtectedRoute><Lockers /></ProtectedRoute>} />
                 <Route path="/reserve" element={<ProtectedRoute><Reserve /></ProtectedRoute>} />
                 <Route path="/my-locker" element={<ProtectedRoute><MyLocker /></ProtectedRoute>} />
-                <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
                 <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
               </Routes>
             </motion.div>

@@ -9,6 +9,7 @@ export default function Dashboard() {
   const isAdmin = user?.role === "ADMIN";
   const [stats, setStats] = useState(null);
   const [activity, setActivity] = useState([]);
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,12 +20,16 @@ export default function Dashboard() {
       const promises = [api("/api/stats")];
       if (isAdmin) {
         promises.push(api("/api/activity?limit=12"));
+      } else {
+        promises.push(api("/api/bookings/history"));
       }
 
       const results = await Promise.all(promises);
       setStats(results[0]);
       if (isAdmin && results[1]) {
         setActivity(results[1].activity ?? []);
+      } else if (!isAdmin && results[1]) {
+        setHistory(results[1].history ?? []);
       }
     } catch (e) {
       setError(e.message || "Could not load dashboard.");
@@ -145,6 +150,53 @@ export default function Dashboard() {
                       <td className="px-5 py-3 text-sm font-semibold text-gray-900">{item.locker}</td>
                       <td className="px-5 py-3 text-sm text-gray-600">{item.details}</td>
                       <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(item.at).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Booking History Log */}
+      {!isAdmin && (
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-gray-900">Booking History</h2>
+            <span className="text-xs text-gray-400 font-medium">{history.length} records</span>
+          </div>
+          
+          {loading && history.length === 0 ? (
+            <div className="p-6 space-y-3">
+              {[1,2,3].map(i => <div key={i} className="animate-pulse h-10 bg-gray-100 rounded" />)}
+            </div>
+          ) : history.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
+                <Clock className="w-5 h-5 text-gray-400" />
+              </div>
+              <p className="text-sm font-medium text-gray-500">No booking history yet</p>
+              <p className="text-xs text-gray-400 mt-1">Completed bookings will appear here</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-gray-50/50">
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Resource ID</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Start Time</th>
+                    <th className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">End Time</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {history.map((booking) => (
+                    <tr key={booking.id} className="hover:bg-orange-50/40 transition-colors">
+                      <td className="px-5 py-3 text-sm font-semibold text-gray-900">{booking.lockerCode}</td>
+                      <td className="px-5 py-3 text-sm text-gray-600">{booking.location}</td>
+                      <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(booking.startedAt).toLocaleString()}</td>
+                      <td className="px-5 py-3 text-sm text-gray-400 tabular-nums">{new Date(booking.endedAt).toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

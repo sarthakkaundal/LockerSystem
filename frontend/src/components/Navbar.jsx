@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LayoutDashboard, Box, User, History as HistoryIcon, Settings } from "lucide-react";
+import { LayoutDashboard, Box, User, Settings } from "lucide-react";
 import VaultaLogo from "./VaultaLogo";
 
 import { useState } from "react";
@@ -46,10 +46,6 @@ export default function Navbar({ isOpen, setIsOpen }) {
         <NavLink to="/my-locker" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "My Record" : ""}>
           <User className="w-5 h-5 flex-shrink-0" />
           {!isCollapsed && <span className="whitespace-nowrap">My Record</span>}
-        </NavLink>
-        <NavLink to="/history" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "Booking History" : ""}>
-          <HistoryIcon className="w-5 h-5 flex-shrink-0" />
-          {!isCollapsed && <span className="whitespace-nowrap">Booking History</span>}
         </NavLink>
         
         {user?.role === "ADMIN" ? (
