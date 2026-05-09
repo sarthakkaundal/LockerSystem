@@ -130,16 +130,14 @@ function Lockers() {
                 <motion.div 
                   variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
                   key={locker.id} 
-                  className={`group bg-white rounded-lg border transition-all duration-200 p-5 flex flex-col cursor-pointer ${
-                    isAvail 
-                      ? 'border-gray-200 hover:border-orange-300 hover:shadow-md' 
-                      : 'border-gray-200 opacity-75'
+                  className={`group bg-white border border-gray-200 p-5 flex flex-col cursor-pointer transition-colors hover:border-orange-500 ${
+                    !isAvail ? 'opacity-75' : ''
                   }`}
                   onClick={() => isAvail && navigate(`/reserve?locker=${encodeURIComponent(locker.id)}`)}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-lg font-bold text-gray-900">{locker.id}</span>
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded border text-xs font-semibold ${statusConfig.badge}`}>
+                    <span className="text-base font-semibold text-gray-900">{locker.id}</span>
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium ${statusConfig.badge}`}>
                       <div className={`w-1.5 h-1.5 rounded-full ${statusConfig.dot}`}></div>
                       {statusConfig.label}
                     </span>

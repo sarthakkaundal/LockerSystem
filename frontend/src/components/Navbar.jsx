@@ -12,10 +12,10 @@ export default function Navbar({ isOpen, setIsOpen }) {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const linkClass = ({ isActive }) => 
-    `flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start gap-4 pl-8 lg:pl-16 pr-4'} py-3 text-base font-bold rounded-none transition-all duration-200 hover:text-orange-600 w-full ${
+    `flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-start gap-3 pl-6 lg:pl-10 pr-4'} py-2.5 text-sm font-medium rounded-none transition-all duration-150 hover:text-orange-600 w-full ${
       isActive 
-        ? "relative bg-orange-50 text-orange-600 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-orange-500" 
-        : "text-slate-600"
+        ? "relative bg-orange-50 text-orange-600 before:absolute before:left-0 before:top-1 before:bottom-1 before:w-[3px] before:bg-orange-500 before:rounded-r-full" 
+        : "text-slate-500 hover:bg-slate-50"
     }`;
 
   return (
@@ -27,32 +27,32 @@ export default function Navbar({ isOpen, setIsOpen }) {
         />
       )}
       <aside className={`fixed lg:sticky top-0 left-0 z-50 h-screen ${isCollapsed ? 'lg:w-20' : 'lg:w-84'} w-72 bg-white border-r border-slate-200 flex flex-col text-slate-600 transform transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="h-24 flex items-center justify-between lg:justify-center px-6 border-b border-slate-200 overflow-hidden relative">
-          {!isCollapsed && <VaultaLogo size={28} className="transition-opacity duration-300" />}
-          {isCollapsed && <VaultaLogo size={28} showText={false} iconOnly className="hidden lg:block" />}
-          <button onClick={() => setIsOpen(false)} className="lg:hidden text-slate-500 hover:text-orange-600">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        <div className="h-16 flex items-center justify-between lg:justify-center px-5 border-b border-slate-200 overflow-hidden relative">
+          {!isCollapsed && <VaultaLogo size={26} className="transition-opacity duration-300" />}
+          {isCollapsed && <VaultaLogo size={26} showText={false} iconOnly className="hidden lg:block" />}
+          <button onClick={() => setIsOpen(false)} className="lg:hidden text-slate-400 hover:text-orange-600">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
-      <nav className="flex-1 overflow-y-auto py-6 space-y-2 px-4 flex flex-col">
+      <nav className="flex-1 overflow-y-auto py-4 space-y-0.5 px-3 flex flex-col">
         <NavLink to="/dashboard" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "Dashboard" : ""}>
-          <LayoutDashboard className="w-5 h-5 flex-shrink-0" />
+          <LayoutDashboard className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span className="whitespace-nowrap">Dashboard</span>}
         </NavLink>
         <NavLink to="/lockers" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "Locker Allocation" : ""}>
-          <Box className="w-5 h-5 flex-shrink-0" />
+          <Box className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span className="whitespace-nowrap">Locker Allocation</span>}
         </NavLink>
-        <NavLink to="/my-locker" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "My Record" : ""}>
-          <User className="w-5 h-5 flex-shrink-0" />
+        <NavLink to="/my-locker" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "Active Booking" : ""}>
+          <User className="w-4 h-4 flex-shrink-0" />
           {!isCollapsed && <span className="whitespace-nowrap">Active Booking</span>}
         </NavLink>
         
         {user?.role === "ADMIN" ? (
-          <div className="mt-6 pt-6 border-t border-slate-200 space-y-2 w-full flex flex-col">
-            {!isCollapsed && <div className="px-4 mb-2 text-xs uppercase tracking-wide text-slate-500 text-center whitespace-nowrap">Administration</div>}
+          <div className="mt-4 pt-4 border-t border-slate-200 space-y-0.5 w-full flex flex-col">
+            {!isCollapsed && <div className="px-3 mb-1 text-[10px] uppercase tracking-widest text-slate-400 whitespace-nowrap">Administration</div>}
             <NavLink to="/admin" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "System Administration" : ""}>
-              <Settings className="w-5 h-5 flex-shrink-0" />
+              <Settings className="w-4 h-4 flex-shrink-0" />
               {!isCollapsed && <span className="whitespace-nowrap">System Administration</span>}
             </NavLink>
           </div>
@@ -73,7 +73,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
             className={`p-4 border-t border-slate-200 cursor-pointer ${isCollapsed ? 'flex justify-center' : ''}`}
           >
             <div className={`flex items-center ${isCollapsed ? 'justify-center p-0' : 'gap-3 px-4 py-3'} bg-white hover:bg-orange-50 transition-colors w-full group`}>
-              <div className="flex-shrink-0 w-8 h-8 rounded-none bg-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-sm overflow-hidden" title={isCollapsed ? user.email : ""}>
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center text-white font-medium text-xs overflow-hidden" title={isCollapsed ? user.email : ""}>
                 {user?.profilePhoto ? (
                   <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
                 ) : (

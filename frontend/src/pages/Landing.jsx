@@ -1,324 +1,312 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
   ShieldCheck, 
   Zap, 
-  Settings, 
-  LockKeyhole, 
+  QrCode,
   ArrowRight, 
   CheckCircle2, 
-  Layers, 
-  Smartphone, 
-  Activity, 
-  LayoutDashboard
+  Clock,
+  MapPin,
+  Lock,
+  LayoutDashboard,
+  Box,
+  User
 } from "lucide-react";
 import VaultaLogo from "../components/VaultaLogo";
 
-// Fade in animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
-const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => (
-  <motion.div 
-    variants={fadeInUp}
-    className="relative group p-8 rounded-none bg-white border border-gray-200 hover:border-orange-500 transition-colors duration-300 shadow-sm"
-  >
-    <div className="absolute inset-0 bg-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    <div className="relative z-10">
-      <div className="w-14 h-14 bg-orange-100 flex items-center justify-center mb-6 text-orange-600 transition-transform duration-300">
-        <Icon size={28} strokeWidth={1.5} />
-      </div>
-      <h3 className="text-xl font-heading font-semibold text-black mb-3">{title}</h3>
-      <p className="text-gray-600 font-sans leading-relaxed">{description}</p>
-    </div>
-  </motion.div>
-);
 
 const Landing = () => {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sans overflow-hidden selection:bg-orange-200 selection:text-black">
-      {/* Abstract Background Elements - Hidden for YC style to keep it clean */}
-      
+    <div className="min-h-screen bg-white text-gray-800 font-sans">
       {/* Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white border-b border-gray-200 py-4 shadow-sm" : "bg-white border-b border-gray-100 py-4"}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <VaultaLogo size={30} />
-          
-
-          <div className="flex items-center gap-4">
-            <Link to="/login" className="text-sm font-tech font-medium text-gray-600 hover:text-orange-600 transition-colors hidden sm:block">
-              Login
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${scrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-white"} border-b border-gray-200`}>
+        <div className="max-w-6xl mx-auto px-6 h-14 flex justify-between items-center">
+          <VaultaLogo size={26} />
+          <div className="flex items-center gap-3">
+            <Link to="/login" className="text-sm text-gray-500 hover:text-gray-900 transition-colors hidden sm:block">
+              Sign in
             </Link>
-            <Link to="/login" className="px-5 py-2 rounded-none bg-orange-500 text-white text-sm font-tech font-semibold hover:bg-orange-600 transition-all border border-orange-600 shadow-sm">
+            <Link to="/login" className="px-4 py-1.5 rounded-lg bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition-colors">
               Get Started
             </Link>
           </div>
         </div>
       </nav>
 
-      <main className="relative z-10 pt-32 lg:pt-48">
-        {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-6 pb-24 lg:pb-32 text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="flex flex-col items-center"
-          >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-200 mb-8 rounded-none">
-              <span className="flex h-2 w-2 rounded-none bg-orange-500"></span>
-              <span className="text-xs font-tech font-bold tracking-wide text-orange-600">VAULTA OS 2.0 IS LIVE</span>
-            </motion.div>
-            
-            <motion.h1 
-              variants={fadeInUp}
-              className="font-heading font-bold text-5xl md:text-7xl lg:text-8xl tracking-tight text-black leading-[1.1] mb-8 max-w-5xl"
-            >
-              Smart Locker <br className="hidden md:block" />
-              <span className="text-orange-500">
-                Management, Reinvented
-              </span>
-            </motion.h1>
-
-            <motion.p 
-              variants={fadeInUp}
-              className="text-lg md:text-xl text-gray-600 max-w-2xl mb-12 font-sans leading-relaxed"
-            >
-              Automate assignments, enforce security, and boost efficiency with the most advanced locker management platform built for modern teams.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link to="/login" className="w-full sm:w-auto px-8 py-4 bg-orange-500 text-white font-tech font-bold text-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 shadow-sm rounded-none border border-orange-600">
-                Get Started <ArrowRight size={18} />
-              </Link>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Features Section */}
-        <section id="features" className="py-24 border-t border-gray-200 bg-[#f6f6ef]">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="font-heading font-bold text-3xl md:text-5xl text-black mb-6">Built for precision.</h2>
-              <p className="font-tech text-gray-600 text-lg max-w-2xl mx-auto">Everything you need to seamlessly orchestrate storage resources at scale.</p>
-            </div>
-
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              <FeatureCard 
-                icon={Activity} 
-                title="Real-time Availability" 
-                description="Instant visibility into which lockers are occupied, reserved, or available across your entire floor plan." 
-              />
-              <FeatureCard 
-                icon={Zap} 
-                title="Smart Assignment" 
-                description="Algorithmic allocation logic ensures optimal space utilization and minimal walking distance." 
-              />
-              <FeatureCard 
-                icon={Settings} 
-                title="Admin Control Panel" 
-                description="Comprehensive oversight with manual overrides, bulk assignments, and detailed reporting." 
-              />
-              <FeatureCard 
-                icon={ShieldCheck} 
-                title="Secure Auth (JWT)" 
-                description="Enterprise-grade security backing every request, ensuring data integrity and user privacy." 
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Interactive Preview Section */}
-        <section id="preview" className="py-32 relative">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col lg:flex-row items-center gap-16">
-              <div className="w-full lg:w-1/2">
-                <motion.div 
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeInUp}
-                >
-                  <h2 className="font-heading font-bold text-4xl md:text-5xl text-black mb-6">
-                    See the big picture.
-                  </h2>
-                  <p className="font-sans text-gray-600 text-lg mb-8 leading-relaxed">
-                    Our intuitive visual interface lets you monitor and manage your locker infrastructure as if you were standing right in front of it.
-                  </p>
-                  
-                  <ul className="space-y-4">
-                    {[
-                      "Interactive spatial mapping",
-                      "One-click assignments",
-                      "Instant maintenance flagging"
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-800 font-tech">
-                        <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
-                          <CheckCircle2 size={14} />
-                        </div>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
+      <main className="pt-14">
+        {/* Hero — compact, left-aligned */}
+        <section className="border-b border-gray-100">
+          <div className="max-w-6xl mx-auto px-6 py-16 lg:py-20">
+            <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+              {/* Text */}
+              <div className="lg:w-5/12 flex-shrink-0">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-orange-50 border border-orange-200 rounded-full mb-5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                  <span className="text-xs font-medium text-orange-600">Open source</span>
+                </div>
+                <h1 className="font-heading font-bold text-3xl md:text-4xl tracking-tight text-gray-900 leading-[1.2] mb-4">
+                  Smart locker management for campuses
+                </h1>
+                <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-md">
+                  Assign lockers, generate access codes, and track usage — all from one dashboard. Built for university campuses.
+                </p>
+                <div className="flex items-center gap-3">
+                  <Link to="/login" className="inline-flex items-center gap-2 px-5 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors">
+                    Try it now <ArrowRight size={15} />
+                  </Link>
+                  <Link to="/login" className="px-5 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    Sign in
+                  </Link>
+                </div>
               </div>
 
-              {/* Mock UI */}
-              <div className="w-full lg:w-1/2">
-                <motion.div 
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="relative p-2 rounded-none bg-orange-500 border border-orange-600"
-                >
-                  <div className="bg-white rounded-none border border-gray-200 overflow-hidden shadow-xl">
-                    {/* Fake Browser Header */}
-                    <div className="h-12 bg-gray-100 border-b border-gray-200 flex items-center px-4 gap-2">
-                      <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                        <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-400"></div>
+              {/* Product preview — locker grid */}
+              <motion.div 
+                initial="hidden" animate="visible" variants={fadeIn}
+                className="lg:w-7/12 w-full"
+              >
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-1.5 shadow-sm">
+                  <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    {/* Mock header bar */}
+                    <div className="h-10 bg-white border-b border-gray-100 flex items-center px-4 gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
                       </div>
-                      <div className="mx-auto px-4 h-6 rounded-none bg-white border border-gray-200 flex items-center">
-                        <span className="text-[10px] text-gray-500 font-tech">vaulta.app/dashboard</span>
+                      <div className="flex-1 flex justify-center">
+                        <div className="px-3 py-0.5 bg-gray-50 rounded-md border border-gray-200 text-[10px] text-gray-400">vaulta.app/lockers</div>
                       </div>
                     </div>
-                    {/* Fake Content */}
-                    <div className="p-6">
-                      <div className="flex justify-between items-center mb-6">
-                        <div className="w-32 h-6 bg-gray-200 rounded-none"></div>
-                        <div className="flex gap-2">
-                          <div className="w-8 h-8 rounded-none bg-gray-200"></div>
-                          <div className="w-8 h-8 rounded-none bg-orange-100"></div>
+                    {/* Mock sidebar + content */}
+                    <div className="flex">
+                      {/* Mini sidebar */}
+                      <div className="hidden sm:flex w-36 border-r border-gray-100 flex-col py-3 px-2 bg-white">
+                        <div className="flex items-center gap-2 px-2 mb-4">
+                          <div className="w-5 h-5 rounded bg-orange-500 flex items-center justify-center">
+                            <Lock size={10} className="text-white" />
+                          </div>
+                          <span className="text-xs font-semibold text-gray-800">Vaulta</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-2 py-1.5 text-gray-400 text-[11px]">
+                          <LayoutDashboard size={12} /> <span>Dashboard</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-2 py-1.5 text-orange-600 bg-orange-50 rounded text-[11px] font-medium">
+                          <Box size={12} /> <span>Lockers</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-2 py-1.5 text-gray-400 text-[11px]">
+                          <User size={12} /> <span>My Booking</span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-4 gap-3 mb-6">
-                        {[...Array(12)].map((_, i) => (
-                          <div key={i} className={`h-20 rounded-none border ${i % 3 === 0 ? 'bg-orange-50 border-orange-200' : i % 5 === 0 ? 'bg-orange-50 border-orange-200' : 'bg-gray-50 border-gray-200'}`}></div>
-                        ))}
+                      {/* Content area */}
+                      <div className="flex-1 p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="flex-1 h-7 bg-gray-50 border border-gray-200 rounded-lg flex items-center px-2">
+                            <span className="text-[10px] text-gray-400">Search lockers...</span>
+                          </div>
+                          <div className="h-7 px-2 bg-gray-50 border border-gray-200 rounded-lg flex items-center">
+                            <span className="text-[10px] text-gray-400">All Locations</span>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          {[
+                            { id: "L-101", loc: "Library Block", status: "Available" },
+                            { id: "L-102", loc: "Library Block", status: "Available" },
+                            { id: "L-103", loc: "Library Block", status: "Maintenance" },
+                            { id: "L-201", loc: "CSE Block", status: "Available" },
+                            { id: "L-202", loc: "CSE Block", status: "Available" },
+                            { id: "L-203", loc: "CSE Block", status: "Available" },
+                            { id: "L-301", loc: "Admin Block", status: "Available" },
+                            { id: "L-302", loc: "Admin Block", status: "Available" },
+                          ].map((l) => (
+                            <div key={l.id} className="border border-gray-200 rounded-lg p-2.5 flex flex-col">
+                              <div className="flex justify-between items-start mb-1">
+                                <span className="text-xs font-semibold text-gray-800">{l.id}</span>
+                                <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-medium ${
+                                  l.status === "Available" ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"
+                                }`}>
+                                  <span className={`w-1 h-1 rounded-full ${l.status === "Available" ? "bg-green-500" : "bg-orange-500"}`}></span>
+                                  {l.status}
+                                </span>
+                              </div>
+                              <span className="text-[9px] text-gray-400 mb-2 flex items-center gap-0.5">
+                                <MapPin size={7} /> {l.loc}
+                              </span>
+                              <div className={`text-center py-1 rounded text-[9px] font-medium ${
+                                l.status === "Available" ? "bg-orange-500 text-white" : "bg-gray-100 text-gray-400"
+                              }`}>
+                                {l.status === "Available" ? "Assign Locker" : "Unavailable"}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div className="w-full h-24 bg-gray-50 rounded-none border border-gray-200"></div>
                     </div>
                   </div>
-                  
-                  {/* Decorative float element */}
-                  <motion.div 
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-6 -left-6 p-4 rounded-none bg-white border border-gray-200 shadow-xl flex items-center gap-4"
-                  >
-                    <div className="w-10 h-10 rounded-none bg-green-100 flex items-center justify-center text-green-600">
-                      <CheckCircle2 size={20} />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* How it works — 3 steps */}
+        <section className="border-b border-gray-100 bg-gray-50/60">
+          <div className="max-w-6xl mx-auto px-6 py-14">
+            <h2 className="font-heading font-semibold text-xl text-gray-900 mb-8">How it works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { step: "1", title: "Browse available lockers", desc: "Filter by location and status. Pick any available locker from the grid." },
+                { step: "2", title: "Reserve with one click", desc: "Choose your duration, add a note, and confirm. Your locker is assigned instantly." },
+                { step: "3", title: "Access via OTP or QR", desc: "Get a one-time passcode and QR code. Scan it at the terminal to unlock." },
+              ].map((item) => (
+                <div key={item.step} className="flex gap-4">
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-semibold flex items-center justify-center mt-0.5">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-800 mb-1">{item.title}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Active Booking preview */}
+        <section className="border-b border-gray-100">
+          <div className="max-w-6xl mx-auto px-6 py-14">
+            <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+              {/* Mock booking UI */}
+              <motion.div 
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
+                className="lg:w-7/12 w-full order-2 lg:order-1"
+              >
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-1.5 shadow-sm">
+                  <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div className="flex">
+                      {/* Booking panel */}
+                      <div className="flex-1 p-6">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 text-[10px] font-medium border border-orange-200 mb-4">
+                          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+                          Active
+                        </div>
+                        <div className="mb-4">
+                          <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-1">Time Remaining</p>
+                          <p className="text-3xl font-semibold font-mono tracking-tight text-gray-900 tabular-nums">01:59:45</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mb-5">
+                          <div>
+                            <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-1">Resource ID</p>
+                            <p className="text-lg font-semibold text-gray-900">L-301</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-1">One-Time Passcode</p>
+                            <div className="bg-gray-50 border border-gray-200 rounded-lg py-1.5 px-3 inline-block">
+                              <p className="text-lg font-mono tracking-[0.15em] font-semibold text-gray-900">3200</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <div className="flex-1 text-center py-2 border border-gray-200 rounded-lg text-xs text-gray-600 font-medium">+ Extend +1hr</div>
+                          <div className="flex-1 text-center py-2 border border-red-200 rounded-lg text-xs text-red-500 font-medium">Release Locker</div>
+                        </div>
+                      </div>
+                      {/* QR section */}
+                      <div className="hidden sm:flex w-48 border-l border-gray-100 flex-col items-center justify-center p-4 bg-gray-50/50">
+                        <div className="w-24 h-24 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                          <QrCode size={48} className="text-gray-400" />
+                        </div>
+                        <p className="text-[10px] font-semibold text-gray-700 mb-0.5">Access Token</p>
+                        <p className="text-[9px] text-gray-400 text-center leading-snug">Scan this QR code at the terminal to unlock</p>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-sm font-heading font-semibold text-black">Locker #A-42</div>
-                      <div className="text-xs text-gray-500 font-tech">Assigned successfully</div>
-                    </div>
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Text */}
+              <div className="lg:w-5/12 order-1 lg:order-2">
+                <h2 className="font-heading font-semibold text-xl text-gray-900 mb-3">
+                  Real-time booking dashboard
+                </h2>
+                <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                  Once you reserve a locker, you get a live countdown timer, a one-time passcode, and a QR code for physical access.
+                </p>
+                <ul className="space-y-2.5">
+                  {[
+                    "Live countdown timer",
+                    "One-time passcode for each session",
+                    "QR code for terminal access",
+                    "Extend or release anytime"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
+                      <CheckCircle2 size={14} className="text-orange-500 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Benefits */}
-        <section id="benefits" className="py-24 border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <motion.div 
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-16 h-16 rounded-none bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
-                  <Zap size={32} />
+        {/* Feature highlights — compact grid */}
+        <section className="border-b border-gray-100 bg-gray-50/60">
+          <div className="max-w-6xl mx-auto px-6 py-14">
+            <h2 className="font-heading font-semibold text-xl text-gray-900 mb-8">Built for campus use</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { icon: Zap, title: "Instant assignment", desc: "Pick a locker, set duration, done. No paperwork." },
+                { icon: ShieldCheck, title: "Secure access", desc: "JWT authentication and per-session OTP codes." },
+                { icon: Clock, title: "Time-based booking", desc: "1, 2, or 4 hour slots with auto-expiry." },
+                { icon: QrCode, title: "QR code unlock", desc: "Scan at the terminal. No keys needed." },
+              ].map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                  <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600 mb-3">
+                    <Icon size={16} />
+                  </div>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-1">{title}</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
                 </div>
-                <h3 className="font-heading text-xl font-semibold text-black mb-3">Faster Allocation</h3>
-                <p className="text-gray-600 font-sans leading-relaxed">Reduce manual assignment time by up to 80% with our intelligent auto-allocation engine.</p>
-              </motion.div>
-              
-              <motion.div 
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.1 }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-16 h-16 rounded-none bg-orange-50 flex items-center justify-center text-orange-600 mb-6">
-                  <Layers size={32} />
-                </div>
-                <h3 className="font-heading text-xl font-semibold text-black mb-3">Reduced Manual Effort</h3>
-                <p className="text-gray-600 font-sans leading-relaxed">Self-service workflows allow users to request and manage their own spaces automatically.</p>
-              </motion.div>
-
-              <motion.div 
-                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={{ delay: 0.2 }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-16 h-16 rounded-none bg-orange-50 flex items-center justify-center text-orange-600 mb-6">
-                  <LayoutDashboard size={32} />
-                </div>
-                <h3 className="font-heading text-xl font-semibold text-black mb-3">Transparent Audit Logs</h3>
-                <p className="text-gray-600 font-sans leading-relaxed">Every action is tracked and recorded, ensuring complete accountability across your facility.</p>
-              </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* CTA / Trust Section */}
-        <section className="py-32 relative overflow-hidden bg-[#f6f6ef] border-t border-gray-200">
-          <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
-            <motion.div
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
-            >
-              <h2 className="font-heading font-bold text-4xl md:text-6xl text-black mb-6">Ready to upgrade your space?</h2>
-              <p className="font-tech text-gray-700 text-xl mb-10">Join forward-thinking teams using Vaulta.</p>
-              <Link to="/login" className="inline-flex items-center gap-2 px-10 py-4 rounded-none bg-orange-500 text-white font-tech font-bold text-lg hover:bg-orange-600 transition-colors shadow-sm border border-orange-600">
-                Start your free trial <ArrowRight size={20} />
-              </Link>
-            </motion.div>
+        {/* CTA */}
+        <section className="border-b border-gray-100">
+          <div className="max-w-6xl mx-auto px-6 py-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <h2 className="font-heading font-semibold text-xl text-gray-900 mb-1">Ready to try Vaulta?</h2>
+              <p className="text-sm text-gray-500">Sign up and reserve your first locker in under a minute.</p>
+            </div>
+            <Link to="/login" className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors flex-shrink-0">
+              Get Started <ArrowRight size={15} />
+            </Link>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white pt-16 pb-8">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <VaultaLogo size={24} />
-          <div className="flex gap-8">
-            <a href="#" className="text-gray-500 hover:text-orange-600 font-tech text-sm transition-colors">Privacy</a>
-            <a href="#" className="text-gray-500 hover:text-orange-600 font-tech text-sm transition-colors">Terms</a>
-            <a href="#" className="text-gray-500 hover:text-orange-600 font-tech text-sm transition-colors">Support</a>
-          </div>
-          <p className="text-gray-400 font-tech text-sm">© {new Date().getFullYear()} Vaulta Systems. All rights reserved.</p>
+      <footer className="bg-white py-8">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <VaultaLogo size={22} />
+          <p className="text-gray-400 text-xs">© {new Date().getFullYear()} Vaulta. Built as a student project.</p>
         </div>
       </footer>
     </div>

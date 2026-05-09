@@ -94,11 +94,11 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="max-w-4xl w-full relative min-h-[660px] md:h-[660px] flex">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="max-w-3xl w-full relative min-h-[600px] md:h-[600px] flex">
         
         {/* Container for the sliding panels */}
-        <div className="absolute inset-0 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:block">
+        <div className="absolute inset-0 bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:block">
           
           {/* Form Panel (Slides right on Register) */}
           <div 
@@ -106,39 +106,39 @@ function Login() {
               !isLogin ? 'md:translate-x-full' : 'md:translate-x-0'
             }`}
           >
-            <div className="mb-6 text-center sm:text-left">
-              <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+            <div className="mb-5 text-center sm:text-left">
+              <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">
                 {isLogin ? "Welcome back" : "Create an account"}
               </h2>
-              <p className="mt-2 text-sm text-slate-600">
-                {isLogin ? "Sign in to access your dashboard" : "Sign up to get started with Vaulta"}
+              <p className="mt-1 text-sm text-slate-400">
+                {isLogin ? "Sign in to your dashboard" : "Get started with Vaulta"}
               </p>
             </div>
 
-            {/* Toggle System (Always visible for easy switching) */}
-            <div className="flex rounded-lg bg-slate-100 p-1 mb-8 relative">
+            {/* Toggle */}
+            <div className="flex rounded-lg bg-slate-100 p-0.5 mb-6 relative">
               <button
                 type="button"
                 onClick={() => toggleMode(true)}
-                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  isLogin ? "text-orange-600" : "text-slate-500 hover:text-slate-700"
+                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
+                  isLogin ? "text-orange-600" : "text-slate-400 hover:text-slate-600"
                 }`}
               >
-                Login
+                Sign in
               </button>
               <button
                 type="button"
                 onClick={() => toggleMode(false)}
-                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  !isLogin ? "text-orange-600" : "text-slate-500 hover:text-slate-700"
+                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
+                  !isLogin ? "text-orange-600" : "text-slate-400 hover:text-slate-600"
                 }`}
               >
                 Register
               </button>
               <motion.div
-                className="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-md shadow-sm pointer-events-none"
+                className="absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-white rounded-md shadow-sm pointer-events-none"
                 initial={false}
-                animate={{ left: isLogin ? "4px" : "calc(50% + 0px)" }}
+                animate={{ left: isLogin ? "2px" : "calc(50%)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               />
             </div>
@@ -204,7 +204,7 @@ function Login() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full mt-2 bg-orange-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
+                        className="w-full mt-1 bg-orange-500 text-white px-4 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-60 flex justify-center items-center"
                       >
                         {submitting ? (
                           <>
@@ -319,7 +319,7 @@ function Login() {
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="w-full mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg hover:shadow-md transition-all duration-200 font-medium disabled:opacity-70 flex justify-center items-center"
+                        className="w-full mt-2 bg-orange-500 text-white px-4 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-60 flex justify-center items-center"
                       >
                         {submitting ? (
                           <>
@@ -340,18 +340,14 @@ function Login() {
             </div>
           </div>
 
-          {/* Branding Panel (Slides left on Register) */}
+          {/* Branding Panel */}
           <div 
-            className={`hidden md:flex w-1/2 bg-slate-950 p-12 text-white items-center justify-center flex-col text-center absolute top-0 h-full z-20 left-1/2 transition-transform duration-700 ease-in-out ${
+            className={`hidden md:flex w-1/2 bg-slate-900 p-10 text-white items-center justify-center flex-col text-center absolute top-0 h-full z-20 left-1/2 transition-transform duration-700 ease-in-out ${
               !isLogin ? '-translate-x-full' : 'translate-x-0'
             }`}
           >
-            {/* Decorative shapes */}
-            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 rounded-full bg-white opacity-10 blur-2xl pointer-events-none"></div>
-            {/* Centered Logo */}
-            <div className="z-10 mb-8 flex flex-col items-center">
-              <VaultaLogo size={56} dark />
+            <div className="z-10 mb-6 flex flex-col items-center">
+              <VaultaLogo size={44} dark />
             </div>
             
             <AnimatePresence mode="wait">
@@ -364,17 +360,17 @@ function Login() {
                   transition={{ duration: 0.4 }}
                   className="z-10 flex flex-col items-center"
                 >
-                  <h2 className="text-4xl font-bold mb-6 text-white">Welcome to Vaulta</h2>
-                  <p className="text-slate-300 text-lg max-w-md mb-10">
-                    Your secure digital locker system. Store, manage, and access your assets with enterprise-grade security.
+                  <h2 className="text-2xl font-semibold mb-3 text-white">Welcome to Vaulta</h2>
+                  <p className="text-slate-400 text-sm max-w-xs mb-8 leading-relaxed">
+                    Your locker management system. Simple, secure, and efficient.
                   </p>
-                  <p className="text-sm text-slate-400 mb-4">Don't have an account?</p>
+                  <p className="text-xs text-slate-500 mb-3">No account yet?</p>
                   <button 
                     type="button"
                     onClick={() => toggleMode(false)}
-                    className="px-8 py-2 rounded-full border border-slate-700 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 font-medium"
+                    className="px-6 py-1.5 rounded-full border border-slate-600 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-200 text-sm font-medium"
                   >
-                    Sign Up
+                    Sign up
                   </button>
                 </motion.div>
               ) : (
@@ -386,17 +382,17 @@ function Login() {
                   transition={{ duration: 0.4 }}
                   className="z-10 flex flex-col items-center"
                 >
-                  <h2 className="text-4xl font-bold mb-6 text-white">Hello, Friend!</h2>
-                  <p className="text-slate-300 text-lg max-w-md mb-10">
-                    Enter your personal details and start your journey with Vaulta today.
+                  <h2 className="text-2xl font-semibold mb-3 text-white">Hello there</h2>
+                  <p className="text-slate-400 text-sm max-w-xs mb-8 leading-relaxed">
+                    Create your account and start using Vaulta today.
                   </p>
-                  <p className="text-sm text-slate-400 mb-4">Already have an account?</p>
+                  <p className="text-xs text-slate-500 mb-3">Already have an account?</p>
                   <button 
                     type="button"
                     onClick={() => toggleMode(true)}
-                    className="px-8 py-2 rounded-full border border-slate-700 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 font-medium"
+                    className="px-6 py-1.5 rounded-full border border-slate-600 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-200 text-sm font-medium"
                   >
-                    Sign In
+                    Sign in
                   </button>
                 </motion.div>
               )}

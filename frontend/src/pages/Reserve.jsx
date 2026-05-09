@@ -107,16 +107,16 @@ function Reserve() {
         </div>
       ) : null}
 
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-md mx-auto">
         <motion.form 
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleSubmit} 
-          className="bg-white rounded-lg border border-gray-200"
+          className="bg-white rounded-lg border border-gray-200 shadow-sm"
         >
           <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-gray-900">Assignment Configuration</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Select a locker and configure your booking</p>
+            <h2 className="text-sm font-semibold text-gray-800">Reserve a Locker</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Select an available locker and set your duration</p>
           </div>
           <div className="p-6 space-y-5">
             {submitError ? (
@@ -126,8 +126,8 @@ function Reserve() {
             ) : null}
 
             <div>
-              <label htmlFor="locker" className="block text-sm font-medium text-gray-700 mb-1.5">
-                Select Resource
+              <label htmlFor="locker" className="block text-xs font-medium text-gray-500 mb-1.5">
+                Select Locker
               </label>
               {loading ? (
                 <div className="animate-pulse h-10 bg-gray-100 rounded-lg"></div>
@@ -167,7 +167,7 @@ function Reserve() {
             ) : null}
 
             <div>
-              <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="duration" className="block text-xs font-medium text-gray-500 mb-1.5">
                 Duration
               </label>
               <div className="relative">
@@ -189,8 +189,8 @@ function Reserve() {
 
             <div>
               <div className="flex justify-between items-end mb-1.5">
-                <label htmlFor="note" className="block text-sm font-medium text-gray-700">
-                  Reference Note
+                <label htmlFor="note" className="block text-xs font-medium text-gray-500">
+                  Note <span className="font-normal text-gray-400">(optional)</span>
                 </label>
                 <span className="text-xs text-gray-400">{note.length}/500</span>
               </div>
@@ -215,7 +215,7 @@ function Reserve() {
                 className="flex-1 bg-orange-500 text-white px-5 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
               >
                 {submitting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : null}
-                {submitting ? "Processing..." : "Confirm Assignment"}
+                {submitting ? "Processing..." : "Confirm"}
               </button>
             </div>
           </div>

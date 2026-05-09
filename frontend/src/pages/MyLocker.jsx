@@ -151,29 +151,29 @@ export default function MyLocker() {
             >
               {/* Status badge */}
               <div className="flex items-center justify-between mb-6">
-                <span className="inline-flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded bg-orange-50 text-orange-700 border border-orange-200">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></div>
-                  Active Assignment
+                  Active
                 </span>
               </div>
 
               {/* Timer */}
               <div className="border-b border-gray-100 pb-6 mb-6">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Time Remaining</p>
-                <div className={`text-4xl sm:text-5xl lg:text-6xl font-bold font-mono tracking-tight ${rem.expired ? "text-red-500" : "text-gray-900"}`}>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">Time Remaining</p>
+                <div className={`text-3xl sm:text-4xl lg:text-5xl font-semibold font-mono tracking-tight tabular-nums ${rem.expired ? "text-red-500" : "text-gray-900"}`}>
                   {rem.h.toString().padStart(2, "0")}:{rem.m.toString().padStart(2, "0")}:{rem.s.toString().padStart(2, "0")}
                 </div>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                 <div>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Resource ID</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">{booking.lockerCode}</p>
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">Resource ID</p>
+                  <p className="text-2xl font-semibold text-gray-900">{booking.lockerCode}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">One-Time Passcode</p>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg py-2 px-4 inline-block">
-                    <p className="text-xl sm:text-2xl lg:text-3xl font-mono tracking-[0.2em] font-bold text-gray-900">{booking.otpCode}</p>
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">One-Time Passcode</p>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 inline-block">
+                    <p className="text-xl sm:text-2xl font-mono tracking-[0.15em] font-semibold text-gray-900">{booking.otpCode}</p>
                   </div>
                 </div>
               </div>

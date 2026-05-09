@@ -142,18 +142,18 @@ export default function Admin() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {statCards.map((card) => (
-          <div key={card.label} className="bg-white rounded-lg border border-gray-200 p-4">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">{card.label}</p>
-            <h2 className={`text-2xl font-bold ${card.color}`}>{card.value}</h2>
+          <div key={card.label} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1.5">{card.label}</p>
+            <h2 className={`text-xl font-semibold ${card.color}`}>{card.value}</h2>
           </div>
         ))}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-5">
         {/* Resource Map */}
-        <div className="bg-white rounded-lg border border-gray-200 flex-grow lg:w-2/3 overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            <span className="text-base font-semibold text-gray-900">Resource Map</span>
+        <div className="bg-white rounded-lg border border-gray-200 flex-grow lg:w-2/3 overflow-hidden shadow-sm">
+          <div className="px-5 py-3.5 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <span className="text-sm font-semibold text-gray-800">Resource Map</span>
             <div className="flex gap-4 text-xs font-medium text-gray-500">
               <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-green-500"></div> Available</span>
               <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-red-500"></div> Occupied</span>
@@ -189,9 +189,9 @@ export default function Admin() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg border border-gray-200 lg:w-1/3 flex flex-col overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100">
-            <span className="text-base font-semibold text-gray-900">Quick Actions</span>
+        <div className="bg-white rounded-lg border border-gray-200 lg:w-1/3 flex flex-col overflow-hidden shadow-sm">
+          <div className="px-5 py-3.5 border-b border-gray-100">
+            <span className="text-sm font-semibold text-gray-800">Quick Actions</span>
           </div>
           <div className="p-5 flex flex-col flex-grow gap-4">
             <div>
@@ -222,9 +222,9 @@ export default function Admin() {
       </div>
 
       {/* Audit Logs */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-          <span className="text-base font-semibold text-gray-900">System Audit Logs</span>
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+        <div className="px-5 py-3.5 border-b border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+          <span className="text-sm font-semibold text-gray-800">System Audit Logs</span>
           <div className="flex gap-3 items-center w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

@@ -91,14 +91,14 @@ export default function Dashboard() {
           <motion.div
             key={card.label}
             variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
-            className="bg-white rounded-lg border border-gray-200 p-5 flex items-start justify-between"
+            className="bg-white rounded-lg border border-gray-200 p-5 flex items-start justify-between shadow-sm"
           >
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">{card.label}</p>
-              <p className="text-3xl font-bold text-gray-900">{loading ? "—" : card.value ?? "—"}</p>
+              <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">{card.label}</p>
+              <p className="text-2xl font-semibold text-gray-900">{loading ? "—" : card.value ?? "—"}</p>
             </div>
-            <div className={`${card.bg} ${card.color} p-2.5 rounded-lg`}>
-              <card.icon className="w-5 h-5" />
+            <div className={`${card.bg} ${card.color} p-2 rounded-lg`}>
+              <card.icon className="w-4 h-4" />
             </div>
           </motion.div>
         ))}
@@ -106,10 +106,10 @@ export default function Dashboard() {
 
       {/* Activity Log */}
       {isAdmin && (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-gray-900">Recent Activity</h2>
-            <span className="text-xs text-gray-400 font-medium">{activity.length} entries</span>
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+          <div className="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-800">Recent Activity</h2>
+            <span className="text-xs text-gray-400">{activity.length} entries</span>
           </div>
           
           {loading && activity.length === 0 ? (
