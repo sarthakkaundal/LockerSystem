@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, LockKeyhole } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import VaultaLogo from "../components/VaultaLogo";
 
@@ -13,12 +13,10 @@ function Login() {
   
   const [isLogin, setIsLogin] = useState(true);
 
-  // Login form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   
-  // Register form state
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -93,313 +91,251 @@ function Login() {
     setError("");
   };
 
+  const inputClass = "w-full px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50/40 focus:bg-white focus:ring-2 focus:ring-orange-400/40 focus:border-orange-300 transition-all text-sm text-gray-900 placeholder:text-gray-300 outline-none";
+  const labelClass = "block text-xs font-medium text-gray-500 mb-1.5";
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="max-w-3xl w-full relative min-h-[600px] md:h-[600px] flex">
-        
-        {/* Container for the sliding panels */}
-        <div className="absolute inset-0 bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:block">
-          
-          {/* Form Panel (Slides right on Register) */}
-          <div 
-            className={`w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center bg-white absolute top-0 h-full z-10 transition-transform duration-700 ease-in-out ${
-              !isLogin ? 'md:translate-x-full' : 'md:translate-x-0'
-            }`}
-          >
-            <div className="mb-5 text-center sm:text-left">
-              <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">
-                {isLogin ? "Welcome back" : "Create an account"}
-              </h2>
-              <p className="mt-1 text-sm text-slate-400">
-                {isLogin ? "Sign in to your dashboard" : "Get started with Vaulta"}
-              </p>
-            </div>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4" style={{ background: 'radial-gradient(ellipse at top, #f8f9fb 0%, #f1f1f4 50%, #edeef1 100%)' }}>
+      {/* Logo */}
+      <div className="mb-6">
+        <VaultaLogo size={30} />
+      </div>
 
-            {/* Toggle */}
-            <div className="flex rounded-lg bg-slate-100 p-0.5 mb-6 relative">
-              <button
-                type="button"
-                onClick={() => toggleMode(true)}
-                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  isLogin ? "text-orange-600" : "text-slate-400 hover:text-slate-600"
-                }`}
-              >
-                Sign in
-              </button>
-              <button
-                type="button"
-                onClick={() => toggleMode(false)}
-                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all duration-200 z-10 ${
-                  !isLogin ? "text-orange-600" : "text-slate-400 hover:text-slate-600"
-                }`}
-              >
-                Register
-              </button>
+      {/* Auth card */}
+      <div className="w-full max-w-[420px]">
+        <div className="bg-white border border-gray-200/80 rounded-2xl shadow-[0_2px_16px_-4px_rgba(0,0,0,0.08)] p-7 sm:p-9">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
+              {isLogin ? "Sign in" : "Create account"}
+            </h1>
+            <p className="text-sm text-gray-400 mt-1">
+              {isLogin ? "Enter your credentials to continue" : "Fill in your details to get started"}
+            </p>
+          </div>
+
+          {/* Tab switcher */}
+          <div className="flex rounded-lg bg-gray-100/80 p-0.5 mb-6 relative">
+            <button
+              type="button"
+              onClick={() => toggleMode(true)}
+              className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors duration-150 z-10 ${
+                isLogin ? "text-gray-900" : "text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              Sign in
+            </button>
+            <button
+              type="button"
+              onClick={() => toggleMode(false)}
+              className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors duration-150 z-10 ${
+                !isLogin ? "text-gray-900" : "text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              Register
+            </button>
+            <motion.div
+              className="absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-white rounded-md shadow-sm pointer-events-none"
+              initial={false}
+              animate={{ left: isLogin ? "2px" : "calc(50%)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            />
+          </div>
+
+          {/* Forms */}
+          <AnimatePresence mode="wait">
+            {isLogin ? (
               <motion.div
-                className="absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-white rounded-md shadow-sm pointer-events-none"
-                initial={false}
-                animate={{ left: isLogin ? "2px" : "calc(50%)" }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            </div>
+                key="login"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.15 }}
+              >
+                <form onSubmit={handleLoginSubmit} noValidate className="space-y-4">
+                  {error && (
+                    <div className="bg-red-50 text-red-600 p-2.5 rounded-lg border border-red-100 text-xs">
+                      {error}
+                    </div>
+                  )}
 
-            <div className="relative overflow-visible flex-1 flex flex-col justify-center">
-              <AnimatePresence mode="wait">
-                {isLogin ? (
-                  <motion.div
-                    key="login"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full"
-                  >
-                    <form onSubmit={handleLoginSubmit} noValidate className="space-y-5">
-                      {error && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-lg border border-red-100 text-sm">
-                          {error}
-                        </div>
-                      )}
+                  <div>
+                    <label htmlFor="email" className={labelClass}>Email</label>
+                    <input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={inputClass}
+                      disabled={submitting}
+                      placeholder="you@university.edu"
+                    />
+                  </div>
 
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
-                          Email address
-                        </label>
-                        <input
-                          id="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="you@example.com"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="password"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                            disabled={submitting}
-                            placeholder="••••••••"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
-                            disabled={submitting}
-                          >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                          </button>
-                        </div>
-                      </div>
-
-                      <button
-                        type="submit"
+                  <div>
+                    <label htmlFor="password" className={labelClass}>Password</label>
+                    <div className="relative">
+                      <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={`${inputClass} pr-9`}
                         disabled={submitting}
-                        className="w-full mt-1 bg-orange-500 text-white px-4 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-60 flex justify-center items-center"
-                      >
-                        {submitting ? (
-                          <>
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Signing in...
-                          </>
-                        ) : (
-                          "Sign in"
-                        )}
-                      </button>
-                    </form>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="register"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full"
-                  >
-                    <form onSubmit={handleRegisterSubmit} noValidate className="space-y-4">
-                      {error && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-lg border border-red-100 text-sm">
-                          {error}
-                        </div>
-                      )}
-
-                      <div>
-                        <label htmlFor="regName" className="block text-sm font-medium text-slate-700 mb-1">
-                          Full Name
-                        </label>
-                        <input
-                          id="regName"
-                          type="text"
-                          value={regName}
-                          onChange={(e) => setRegName(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="John Doe"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="regEmail" className="block text-sm font-medium text-slate-700 mb-1">
-                          Email address
-                        </label>
-                        <input
-                          id="regEmail"
-                          type="email"
-                          value={regEmail}
-                          onChange={(e) => setRegEmail(e.target.value)}
-                          className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                          disabled={submitting}
-                          placeholder="you@example.com"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="regPassword" className="block text-sm font-medium text-slate-700 mb-1">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="regPassword"
-                            type={showRegPassword ? "text" : "password"}
-                            value={regPassword}
-                            onChange={(e) => setRegPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                            disabled={submitting}
-                            placeholder="••••••••"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowRegPassword(!showRegPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
-                            disabled={submitting}
-                          >
-                            {showRegPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="regConfirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
-                          Confirm Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="regConfirmPassword"
-                            type={showRegConfirmPassword ? "text" : "password"}
-                            value={regConfirmPassword}
-                            onChange={(e) => setRegConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
-                            disabled={submitting}
-                            placeholder="••••••••"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowRegConfirmPassword(!showRegConfirmPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
-                            disabled={submitting}
-                          >
-                            {showRegConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                          </button>
-                        </div>
-                      </div>
-
+                        placeholder="••••••••"
+                      />
                       <button
-                        type="submit"
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
                         disabled={submitting}
-                        className="w-full mt-2 bg-orange-500 text-white px-4 py-2.5 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-60 flex justify-center items-center"
                       >
-                        {submitting ? (
-                          <>
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Registering...
-                          </>
-                        ) : (
-                          "Create Account"
-                        )}
+                        {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                       </button>
-                    </form>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
-          {/* Branding Panel */}
-          <div 
-            className={`hidden md:flex w-1/2 bg-slate-900 p-10 text-white items-center justify-center flex-col text-center absolute top-0 h-full z-20 left-1/2 transition-transform duration-700 ease-in-out ${
-              !isLogin ? '-translate-x-full' : 'translate-x-0'
-            }`}
-          >
-            <div className="z-10 mb-6 flex flex-col items-center">
-              <VaultaLogo size={44} dark />
-            </div>
-            
-            <AnimatePresence mode="wait">
-              {isLogin ? (
-                <motion.div
-                  key="branding-login"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
-                  className="z-10 flex flex-col items-center"
-                >
-                  <h2 className="text-2xl font-semibold mb-3 text-white">Welcome to Vaulta</h2>
-                  <p className="text-slate-400 text-sm max-w-xs mb-8 leading-relaxed">
-                    Your locker management system. Simple, secure, and efficient.
-                  </p>
-                  <p className="text-xs text-slate-500 mb-3">No account yet?</p>
-                  <button 
-                    type="button"
-                    onClick={() => toggleMode(false)}
-                    className="px-6 py-1.5 rounded-full border border-slate-600 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-200 text-sm font-medium"
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-orange-500 text-white px-4 py-2.5 rounded-lg hover:bg-orange-600 active:bg-orange-700 transition-colors font-medium text-sm disabled:opacity-50 flex justify-center items-center shadow-sm"
                   >
-                    Sign up
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Signing in...
+                      </>
+                    ) : (
+                      "Sign in"
+                    )}
                   </button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="branding-register"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
-                  className="z-10 flex flex-col items-center"
-                >
-                  <h2 className="text-2xl font-semibold mb-3 text-white">Hello there</h2>
-                  <p className="text-slate-400 text-sm max-w-xs mb-8 leading-relaxed">
-                    Create your account and start using Vaulta today.
-                  </p>
-                  <p className="text-xs text-slate-500 mb-3">Already have an account?</p>
-                  <button 
-                    type="button"
-                    onClick={() => toggleMode(true)}
-                    className="px-6 py-1.5 rounded-full border border-slate-600 text-slate-300 hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-200 text-sm font-medium"
-                  >
-                    Sign in
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                </form>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="register"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.15 }}
+              >
+                <form onSubmit={handleRegisterSubmit} noValidate className="space-y-3">
+                  {error && (
+                    <div className="bg-red-50 text-red-600 p-2.5 rounded-lg border border-red-100 text-xs">
+                      {error}
+                    </div>
+                  )}
 
+                  <div>
+                    <label htmlFor="regName" className={labelClass}>Full name</label>
+                    <input
+                      id="regName"
+                      type="text"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      className={inputClass}
+                      disabled={submitting}
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="regEmail" className={labelClass}>Email</label>
+                    <input
+                      id="regEmail"
+                      type="email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      className={inputClass}
+                      disabled={submitting}
+                      placeholder="you@university.edu"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="regPassword" className={labelClass}>Password</label>
+                    <div className="relative">
+                      <input
+                        id="regPassword"
+                        type={showRegPassword ? "text" : "password"}
+                        value={regPassword}
+                        onChange={(e) => setRegPassword(e.target.value)}
+                        className={`${inputClass} pr-9`}
+                        disabled={submitting}
+                        placeholder="••••••••"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegPassword(!showRegPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+                        disabled={submitting}
+                      >
+                        {showRegPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="regConfirmPassword" className={labelClass}>Confirm password</label>
+                    <div className="relative">
+                      <input
+                        id="regConfirmPassword"
+                        type={showRegConfirmPassword ? "text" : "password"}
+                        value={regConfirmPassword}
+                        onChange={(e) => setRegConfirmPassword(e.target.value)}
+                        className={`${inputClass} pr-9`}
+                        disabled={submitting}
+                        placeholder="••••••••"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegConfirmPassword(!showRegConfirmPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+                        disabled={submitting}
+                      >
+                        {showRegConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm disabled:opacity-50 flex justify-center items-center"
+                  >
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Registering...
+                      </>
+                    ) : (
+                      "Create account"
+                    )}
+                  </button>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
+        {/* Footer link */}
+        <p className="text-center text-xs text-gray-400 mt-5">
+          {isLogin ? (
+            <>Don't have an account?{" "}
+              <button type="button" onClick={() => toggleMode(false)} className="text-orange-500 hover:text-orange-600 font-medium">Sign up</button>
+            </>
+          ) : (
+            <>Already have an account?{" "}
+              <button type="button" onClick={() => toggleMode(true)} className="text-orange-500 hover:text-orange-600 font-medium">Sign in</button>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );
