@@ -45,7 +45,7 @@ export default function Navbar({ isOpen, setIsOpen }) {
         </NavLink>
         <NavLink to="/my-locker" onClick={() => setIsOpen(false)} className={linkClass} title={isCollapsed ? "My Record" : ""}>
           <User className="w-5 h-5 flex-shrink-0" />
-          {!isCollapsed && <span className="whitespace-nowrap">My Record</span>}
+          {!isCollapsed && <span className="whitespace-nowrap">Active Booking</span>}
         </NavLink>
         
         {user?.role === "ADMIN" ? (
