@@ -79,10 +79,6 @@ function AppContent() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="font-medium truncate max-w-[180px]">{user?.name || user?.email}</span>
-              </div>
               <button
                 type="button"
                 onClick={logout}
