@@ -18,6 +18,7 @@ import {
 import { BookingStatus, LockerStatus } from "@prisma/client";
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = Number(process.env.PORT) || 4000;
 
 app.use(cors({
