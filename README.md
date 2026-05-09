@@ -1,109 +1,111 @@
-# Smart Campus Locker System
+#  Vaulta – Smart Locker Management
 
-A smart locker management system for universities that helps day scholars securely store their belongings for short durations using digital access methods like OTP or QR.
+Vaulta is a premium, full-stack smart locker management system designed for university campuses. It helps students securely reserve and access short-term storage using digital keys (OTP and QR codes), while providing administrators with a powerful dashboard to monitor usage, track logs, and manage resources.
 
-## Problem
+---
 
-Day scholars often carry heavy bags, laptops, books, lunchboxes, and personal items throughout the day. In many universities, there are no secure short-term storage options near libraries, labs, or academic blocks. This creates inconvenience, theft risk, and poor locker utilization.
+##  Key Features
 
-## Proposed Solution
+###  For Students
+*   **Live Availability:** Browse available lockers across various campus locations.
+*   **Instant Booking:** Reserve lockers for 1, 2, or 4-hour sessions with a single click.
+*   **Digital Access:** Securely unlock lockers using session-specific One-Time Passcodes (OTP) or QR codes.
+*   **Active Management:** Monitor remaining time with live countdowns, extend sessions, or release early.
 
-The Smart Campus Locker System provides on-demand locker access through a digital platform. Students can view available lockers, reserve one, and access it using OTP or QR-based verification. The system is designed to improve security, convenience, and locker utilization on campus.
+###  For Administrators
+*   **System Overview:** View real-time analytics on locker utilization, available resources, and user activity.
+*   **Audit Logs:** Track all system events comprehensively, with capabilities to export logs to CSV.
+*   **Resource Control:** Quickly put specific lockers into maintenance mode or force-release overdue/abandoned bookings.
 
-## Tech Stack
+---
 
-| Layer    | Technology                                      |
-| -------- | ----------------------------------------------- |
-| Frontend | React (Vite), Tailwind CSS v4, React Router     |
-| Backend  | Node.js, Express                                |
-| Database | SQLite (Prisma) — swap `DATABASE_URL` for PostgreSQL |
+##  Technology Stack
 
-## Quick start (full stack)
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 18, Vite, Tailwind CSS v4, Framer Motion, React Router, Lucide Icons |
+| **Backend** | Node.js, Express.js, JWT Authentication |
+| **Database** | PostgreSQL (Neon DB) via Prisma ORM |
 
-1. **Install dependencies**
+---
 
-   ```bash
-   cd d:\LockerSystem
-   npm install
-   npm install --prefix backend
-   npm install --prefix frontend
-   ```
+##  Getting Started (Local Development)
 
-2. **Database** — from `backend/`, create the schema and seed demo users:
-
-   ```bash
-   cd backend
-   copy .env.example .env
-   npx prisma db push
-   npx prisma db seed
-   ```
-
-   Demo accounts:
-
-   - Student: `student@university.edu` / `password123`
-   - Admin: `admin@university.edu` / `admin123`
-
-3. **Run API + UI together** (from repo root):
-
-   ```bash
-   npm run dev
-   ```
-
-   - Frontend: [http://localhost:5173](http://localhost:5173) (proxies `/api` to the backend)
-   - API: [http://localhost:4000](http://localhost:4000)
-
-4. **Flow to demo**
-
-   - Sign in as the student → **Dashboard** (live stats) → **Lockers** → **Reserve** → **My Locker** (countdown, OTP, QR).
-   - **Release** or **Extend** (new OTP; total span capped at 8 hours from original start).
-   - Sign in as admin → **Admin** for analytics, logs, CSV export, maintenance toggle, force release.
-
-### Verify the build locally
-
-If automated tools cannot run scripts in your environment, run:
+### 1. Install Dependencies
+Run the following commands from the root directory to install all necessary packages for both frontend and backend:
 
 ```bash
-npm run lint --prefix frontend
-npm run build --prefix frontend
+cd d:\LockerSystem
+npm install
+npm install --prefix backend
+npm install --prefix frontend
 ```
 
-### Production notes
+### 2. Environment Configuration
+Navigate to the backend directory and set up your environment variables:
 
-- Set `JWT_SECRET` and a strong database URL in `backend/.env`.
-- Point `DATABASE_URL` at PostgreSQL and run `npx prisma db push` (or migrations) there.
-- Build the SPA (`npm run build --prefix frontend`) and serve `frontend/dist` behind your reverse proxy; set `VITE_API_URL` at build time to the public API origin if the UI is not same-origin (see `frontend/.env.example`).
+```bash
+cd backend
+copy .env.example .env
+```
+Ensure you provide a valid `DATABASE_URL` (SQLite or PostgreSQL) and `JWT_SECRET` in your `.env` file.
 
-## API overview
+### 3. Database Setup
+Initialize the database schema and populate it with sample data:
 
-| Method | Path | Description |
-| ------ | ---- | ----------- |
-| POST | `/api/auth/login` | Email/password → JWT |
-| GET | `/api/lockers` | List lockers (`?location=&status=`) |
-| GET | `/api/stats` | Aggregate counts |
-| GET | `/api/activity` | Recent log lines for the dashboard |
-| GET | `/api/bookings/active` | Current user’s active booking (auth) |
-| GET | `/api/bookings/history` | Completed bookings (auth) |
-| POST | `/api/bookings` | Create booking: `lockerCode`, `durationHours` 1\|2\|4, optional `note` (auth) |
-| POST | `/api/bookings/:id/release` | Release (auth) |
-| POST | `/api/bookings/:id/extend` | Body `{ hours: 1 \| 2 }` (auth) |
-| GET | `/api/admin/overview` | Analytics (admin) |
-| GET | `/api/admin/logs` | Log rows (admin) |
-| GET | `/api/admin/logs/export` | CSV (admin) |
-| POST | `/api/admin/lockers/maintenance` | Body `{ code, maintenance: boolean }` (admin) |
-| POST | `/api/admin/bookings/force-release` | Body `{ lockerCode }` (admin) |
+```bash
+npx prisma db push
+npx prisma db seed
+```
 
-Expired bookings are finalized on read (locker freed, log entry).
+**Demo Accounts Created by Seed:**
+*   **Student:** `student@university.edu` / `password123`
+*   **Admin:** `admin@university.edu` / `admin123`
 
-## Roadmap status
+### 4. Run the Application
+Start both the frontend and backend development servers concurrently from the root directory:
 
-- **Phase 1 — UI prototype:** Initial screens and navigation (superseded by live data).
-- **Phase 2 — Backend integration:** Express APIs, JWT auth, Prisma persistence, OTP on booking, frontend wired to `/api`.
-- **Phase 3 — Access logic:** QR from booking payload, live countdown, release + extend, booking history and server-side logs.
-- **Phase 4 — Polish:** Responsive nav, form validation and error states, admin analytics and CSV export, this documentation.
+```bash
+cd ..
+npm run dev
+```
 
-## Future scope
+*   **Frontend UI:** [http://localhost:5173](http://localhost:5173) 
+*   **Backend API:** [http://localhost:3000](http://localhost:3000)
 
-- RFID-based access  
-- Smart lock hardware integration  
-- Charging-enabled lockers  
-- Real-time campus locker station monitoring  
+---
+
+##  API Reference
+
+### Authentication
+*   `POST /api/auth/login` - Authenticate user and receive JWT.
+*   `POST /api/auth/register` - Create a new user account.
+
+### Lockers
+*   `GET /api/lockers` - List all lockers (supports `?location=` and `?status=` filters).
+
+### Bookings
+*   `GET /api/bookings/active` - Fetch the current user's active booking.
+*   `GET /api/bookings/history` - Fetch the current user's past bookings.
+*   `POST /api/bookings` - Create a new reservation (`lockerCode`, `durationHours`).
+*   `POST /api/bookings/:id/extend` - Extend an active booking.
+*   `POST /api/bookings/:id/release` - End an active booking.
+
+### Administration (Requires Admin Role)
+*   `GET /api/admin/overview` - Aggregate system analytics.
+*   `GET /api/admin/logs` - System audit logs.
+*   `GET /api/admin/logs/export` - Export logs as CSV.
+*   `POST /api/admin/lockers/maintenance` - Toggle locker maintenance status.
+*   `POST /api/admin/bookings/force-release` - Administratively release a locker.
+
+---
+
+##  Future Roadmap
+
+*   **Hardware Integration:** Connect the platform with physical IoT smart locks and RFID scanners.
+*   **Monetization / Billing:** Integration with payment gateways for premium tiered access.
+*   **Push Notifications:** Alerts for expiring sessions and system updates.
+*   **Mobile Application:** Native iOS/Android apps built with React Native.
+
+---
+*Built as a student project. Designed for practicality, simplicity, and modern aesthetics.*
