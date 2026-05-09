@@ -288,18 +288,7 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="border-b border-gray-100">
-          <div className="max-w-6xl mx-auto px-6 py-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <h2 className="font-heading font-semibold text-xl text-gray-900 mb-1">Ready to try Vaulta?</h2>
-              <p className="text-sm text-gray-500">Sign up and reserve your first locker in under a minute.</p>
-            </div>
-            <Link to="/login" className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors flex-shrink-0">
-              Get Started <ArrowRight size={15} />
-            </Link>
-          </div>
-        </section>
+    
       </main>
 
       {/* Footer */}
